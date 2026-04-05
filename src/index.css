@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-primary: var(--bg-color);
+  --color-text-primary: var(--text-primary);
+  /* Added a dedicated Heading color to prevent "White on White" in Day Mode */
+  --color-text-heading: var(--text-heading); 
+  --color-card: var(--card-bg);
+  --color-card-border: var(--card-border);
+}
+
+:root {
+  --bg-color: #ffffff;
+  --text-primary: #404040;   /* Balanced gray for body text */
+  --text-heading: #0a0a0a;   /* Near black for high-visibility titles */
+  --card-bg: #f9f9f9;
+  --card-border: rgba(0, 0, 0, 0.08);
+}
+
+html.dark {
+  --bg-color: #050505;
+  --text-primary: #a3a3a3;   /* Neutral gray for dark mode body */
+  --text-heading: #ffffff;   /* Pure white for dark mode titles */
+  --card-bg: #0a0a0a;
+  --card-border: rgba(255, 255, 255, 0.05);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  /* Removed @apply transition-colors from body to prevent 'flashing' on load */
+  transition: background-color 0.5s ease;
+  font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+  margin: 0;
+}
+
+/* 🚩 THE FIX: REMOVED the '*' border reset 🚩 */
+/* Global border resets often force invisible borders on everything. 
+   Only apply borders where you explicitly call them in your components. */
+
+.backdrop-blur-md {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}

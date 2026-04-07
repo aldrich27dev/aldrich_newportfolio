@@ -29,32 +29,51 @@ export default function ScrollToTop() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.button
-          // Entry Animation: Slides up from the bottom and fades in
-          initial={{ opacity: 0, y: 50, scale: 0.5 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 20, scale: 0.5 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          
-          onClick={scrollToTop}
-          className="fixed bottom-10 right-10 z-[9999] group flex flex-col items-center gap-2"
-        >
-          {/* Tactical OS Label */}
-          <span className="text-[9px] font-mono opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-[0.2em] mb-1">
-            // GO UP!
-          </span>
-
-          <div className="size-14 bg-text-primary text-bg-primary border border-card-border rounded-2xl shadow-2xl flex items-center justify-center hover:scale-110 active:scale-90 transition-all duration-300 cursor-pointer overflow-hidden relative">
-            <Icon name="ArrowUp" />
+ return (
+  <AnimatePresence>
+    {isVisible && (
+      <motion.button
+        // 🚩 Entry Animation
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ 
+          opacity: 1, 
+          y: [0, 8, 0], // 🚩 Ito yung Floating Logic (baba, taas, balik)
+        }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ 
+          // Transition para sa entry
+          opacity: { duration: 0.4 },
+          // 🚩 Transition para sa floating loop
+          y: {
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }
+        }}
+        
+        onClick={scrollToTop}
+        // 🚩 Centered and positioned below navbar
+        className="fixed top-[75px] left-1/2 -translate-x-1/2 z-[9998] group flex flex-col items-center"
+      >
+        <div className="relative">
+          {/* 🚩 The Floating Body */}
+          <div className="size-10 md:size-12 bg-white/10 dark:bg-neutral-900/40 backdrop-blur-md text-emerald-500 border border-emerald-500/20 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.2)] flex items-center justify-center hover:scale-110 hover:border-emerald-500/50 transition-all duration-300 cursor-pointer overflow-hidden">
+            <Icon name="ArrowUp" size={20} strokeWidth={3} />
             
-            {/* Emerald "Active" indicator to match your terminal vibe */}
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-emerald-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+            {/* Scanline effect para sa tactical vibe */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent s-full animate-scan" />
           </div>
-        </motion.button>
-      )}
-    </AnimatePresence>
-  );
+
+          {/* 🚩 Shadow Glow sa ilalim para mukhang nakalutang */}
+          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-1 bg-emerald-500/20 blur-sm rounded-full group-hover:w-6 transition-all" />
+        </div>
+
+        {/* Label */}
+        <span className="text-[7px] font-mono opacity-0 group-hover:opacity-100 transition-all duration-300 uppercase tracking-[0.3em] mt-3 bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-sm border border-emerald-500/20">
+          SYS.UP
+        </span>
+      </motion.button>
+    )}
+  </AnimatePresence>
+);
 }

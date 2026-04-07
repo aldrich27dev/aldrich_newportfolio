@@ -203,22 +203,57 @@ useEffect(() => {
  return (
     <motion.div
       animate={{ 
-        bottom: isScrolled ? 112 : 24, 
+        bottom: 24, 
         right: 40 
       }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className="fixed z-[99999] flex flex-col items-end"
     >
-      {/* 🚩 Hint Bubble: Lalabas sa taas ng icon, mawawala after 5s or pag click */}
       <AnimatePresence>
         {showHint && !isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            className="absolute -top-12 right-0 whitespace-nowrap bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-3 py-1.5 rounded-full shadow-lg font-mono text-[10px]"
+            initial={{ opacity: 0, y: 15, scale: 0.8 }}
+            animate={{ 
+              opacity: 1, 
+              y: 0, 
+              scale: 1,
+              transition: {
+                
+                delay: 3, 
+                duration: 0.4,
+            
+                y: {
+                  repeat: Infinity,
+                  duration: 2,
+                  repeatType: "reverse",
+                  ease: "easeInOut"
+                }
+              }
+            }}
+            exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
+            whileHover={{ scale: 1.05 }} 
+            className="absolute -top-14 right-0 md:-right-2 whitespace-nowrap 
+                       bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md 
+                       text-neutral-900 dark:text-white 
+                       px-4 py-2 rounded-2xl rounded-br-none 
+                       shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)]
+                       border border-neutral-200/50 dark:border-white/10 
+                       font-mono text-[10px] md:text-[11px] font-medium z-[99999]"
           >
-            May question kuys? 👈 Chat mo 'ko!
+            <div className="flex items-center gap-2">
+              
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              May question kuys? Chat mo 'ko! 👇
+            </div>
+
+            <div className="absolute -bottom-2 right-4 md:right-6 w-0 h-0 
+                          border-l-[8px] border-l-transparent 
+                          border-t-[8px] border-t-white/90 dark:border-t-neutral-900/90 
+                          border-r-[8px] border-r-transparent">
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -256,7 +291,7 @@ useEffect(() => {
                 </div>
               ))}
               
-              {isTyping && messages[messages.length-1].role === 'user' && (
+              {isTyping && messages[messages.length-1]?.role === 'user' && (
                 <div className="flex justify-start">
                   <div className="bg-neutral-100 dark:bg-white/5 px-3 py-2 rounded-2xl rounded-tl-none flex gap-1 items-center">
                     <span className="size-1.5 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
@@ -310,7 +345,7 @@ useEffect(() => {
           setIsOpen(!isOpen);
           if (showHint) setShowHint(false);
         }}
-        // 🚩 REQ: Smaller on mobile (size-12), standard on desktop (size-14)
+
         className={`size-12 md:size-14 rounded-full md:rounded-2xl flex items-center justify-center shadow-emerald-500/20 shadow-xl transition-all border ${
           isOpen ? 'bg-neutral-900 text-white border-transparent' : 'bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-100 border-neutral-200 dark:border-white/10'
         }`}

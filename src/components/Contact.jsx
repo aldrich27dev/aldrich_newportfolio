@@ -1,54 +1,37 @@
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, SendHorizontal, CornerDownLeft } from 'lucide-react';
-
-const SystemInput = ({ label, icon, ...props }) => (
-  <div className="relative flex flex-col gap-3 w-full group">
-    <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-      {icon || <CornerDownLeft size={10} className="opacity-50" />}
-      <label className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold">
-        {label}
-      </label>
-    </div>
-    <div className="relative">
-      <input 
-        {...props}
-        className="w-full bg-neutral-100 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 px-6 py-5 text-sm text-text-heading dark:text-white rounded-2xl placeholder-neutral-500 outline-none transition-all duration-300
-        focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/5 focus:shadow-[0_0_15px_rgba(16,185,129,0.1)]"
-      />
-    </div>
-  </div>
-);
+import { Mail, Phone, MapPin, CornerDownLeft, Activity, Terminal } from 'lucide-react';
 
 export default function Contact() {
   const systemDetails = [
-    { icon: <Mail size={18} />, label: 'SYSTEM_ADDRESS', value: 'hello@aldrich.dev' },
-    { icon: <Phone size={18} />, label: 'NETWORK_PHONE', value: '+63 9xx xxx xxxx' },
-    { icon: <MapPin size={18} />, label: 'PHYSICAL_NODE', value: 'Manila, PH // GMT+8' },
+    { icon: <Mail size={16} />, label: 'SYSTEM_ADDRESS', value: 'hello@aldrich.dev' },
+    { icon: <Phone size={16} />, label: 'NETWORK_PHONE', value: '+63 9xx xxx xxxx' },
+    { icon: <MapPin size={16} />, label: 'PHYSICAL_NODE', value: 'Manila, PH // GMT+8' },
   ];
 
-  // Animation variants for staggered entrance
-  const listContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 }
-    }
-  };
-
-  const listItem = {
-    hidden: { opacity: 0, x: -20 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } }
-  };
-
   return (
-    <section id="contact" className="py-32 px-6 max-w-6xl mx-auto selection:bg-emerald-500/20 overflow-hidden">
+    <section id="contact" className="relative py-32 px-6 max-w-6xl mx-auto selection:bg-emerald-500/20 overflow-hidden min-h-[70vh] flex flex-col justify-center">
       
-      {/* 1. Formal Header */}
+      {/* 🚩 TACTICAL OVERLAY ELEMENTS */}
+      <div className="absolute inset-0 -z-10 opacity-20 pointer-events-none">
+        {/* Decorative Grid Hint */}
+        <div className="absolute top-10 right-10 w-32 h-32 border border-emerald-500/10 rounded-full animate-pulse" />
+        
+        {/* Node Identifier */}
+        <div className="absolute bottom-20 right-10 text-[8vw] font-black text-emerald-500/[0.03] select-none leading-none font-mono">
+          ...
+        </div>
+
+        {/* UI Crosshairs */}
+        <div className="absolute top-24 left-8 w-12 h-12 border-l-[1px] border-t-[1px] border-emerald-500/30" />
+        <div className="absolute bottom-24 right-8 w-12 h-12 border-r-[1px] border-b-[1px] border-emerald-500/30" />
+      </div>
+
+      {/* 1. Formal Header - UNTOUCHED */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }} 
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="mb-30"
+        className="mb-24 relative z-10"
       >
         <div className="flex items-center gap-4 mb-6">
           <div className="h-[1px] w-12 bg-emerald-500" />
@@ -61,79 +44,85 @@ export default function Contact() {
         </h2>
       </motion.div>
 
-      {/* 2. Structured Layout - Added items-start to fix placement */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+      {/* 2. Structured Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start relative z-10">
         
-        {/* A. Left side: Details with Outline Text & Scroll Stagger */}
+        {/* A. System Nodes (Details) */}
         <motion.div 
-          variants={listContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="lg:col-span-5 space-y-16"
-        >
-
-          <div className="space-y-12">
-            {systemDetails.map((detail, idx) => (
-              <motion.div 
-                key={idx} 
-                variants={listItem}
-                className="pl-6 hover:text-emerald-500"
-              >
-                <span className="text-neutral-500 text-[10px] font-mono uppercase tracking-widest block mb-2">
-                  {detail.label}
-                </span>
-                
-                {/* Minimal Outline Text Logic */}
-                <p 
-                  className="text-xl md:text-xl font-mid tracking-tight cursor-default group-hover:text-text-heading dark:text-neutral-800 "
-                  style={{
-                    WebkitTextStroke: "1px var(--color-card-border, #d4d4d4)",
-                  }}
-                >
-                  {detail.value}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* B. Right side: Formal Form with Slide-in */}
-        <motion.div 
-          initial={{ opacity: 0, x: 30 }} 
-          whileInView={{ opacity: 1, x: 0 }} 
-          transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
           className="lg:col-span-7 space-y-10"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <SystemInput label="Sender_Name" placeholder="Enter full name" type="text" />
-            <SystemInput label="Return_Address" placeholder="name@domain.com" type="email" />
-            </div>
-
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-               <CornerDownLeft size={10} className="rotate-90 opacity-50" />
-               <label className="text-[10px] font-mono uppercase tracking-[0.3em] font-black">YOUR MESSAGE</label>
-            </div>
-            <textarea 
-              placeholder="YOUR MESSAGE HERE..."
-              className="w-full bg-black-100 dark:bg-white-900/50 border border-neutral-200 dark:border-neutral-800 px-6 py-5 text-sm text-text-heading dark:text-black rounded-[2rem] placeholder-neutral-500 min-h-[200px] outline-none transition-all duration-300
-              focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/5 focus:shadow-[0_0_15px_rgba(16,185,129,0.1)] resize-none"
-            />
-          </div>
-
-          <div className="pt-4">
-            <motion.button 
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full md:w-auto px-12 py-6 bg-emerald-500 text-neutral-950 rounded-2xl flex items-center justify-center gap-6 group shadow-lg shadow-emerald-500/20 font-black uppercase tracking-[0.4em] text-[10px]"
+          {systemDetails.map((detail, idx) => (
+            <motion.div 
+              key={idx} 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              className="pl-6 border-l-[1px] border-neutral-800 hover:border-emerald-500/50 transition-all duration-500 group relative"
             >
-              SEND
-              <SendHorizontal size={18} className="transition-transform group-hover:translate-x-2" />
-            </motion.button>
-          </div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-emerald-500/50 group-hover:text-emerald-500 transition-colors">
+                  <Activity size={10} className={idx === 0 ? "animate-pulse" : ""} />
+                </span>
+                <span className="text-neutral-500 text-[9px] font-mono uppercase tracking-[0.4em] font-bold">
+                  {detail.label}
+                </span>
+              </div>
+              
+              <p 
+                className="text-lg md:text-2xl font-bold tracking-tight text-neutral-400 dark:text-neutral-700 group-hover:text-neutral-900 dark:group-hover:text-emerald-400 transition-all duration-300 font-mono"
+              >
+                {detail.value}
+              </p>
+
+              {/* Decorative Byte Info */}
+              <div className="mt-1 flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                <span className="text-[7px] font-mono text-emerald-500/40 tracking-[0.2em]">0x00{idx + 1}7F_READY</span>
+                <div className="h-[1px] w-8 bg-emerald-500/20" />
+              </div>
+            </motion.div>
+          ))}
         </motion.div>
+
+        {/* B. Sidebar Stats (Right Side) */}
+        <div className="hidden lg:flex lg:col-span-5 flex-col justify-between self-stretch py-2 pl-12 border-l border-emerald-500/5">
+           <div className="space-y-6">
+              <div className="flex items-center gap-3">
+                <Terminal size={14} className="text-emerald-500" />
+                <span className="text-[10px] font-mono text-emerald-500 tracking-[0.2em] font-bold">LIVE_STATUS</span>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <div className="flex justify-between text-[8px] font-mono text-neutral-600">
+                    <span>SIGNAL_STRENGTH</span>
+                    <span>98%</span>
+                  </div>
+                  <div className="h-[2px] w-full bg-neutral-900 overflow-hidden">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      whileInView={{ width: "98%" }}
+                      transition={{ duration: 1.5 }}
+                      className="h-full bg-emerald-500/40" 
+                    />
+                  </div>
+                </div>
+
+                <p className="text-[9px] font-mono text-neutral-500 leading-relaxed uppercase tracking-tighter italic">
+                  // listening_for_incoming_packets... <br />
+                  // rsa_encryption_active... <br />
+                  // valenzuela_node_online_v1.0.4
+                </p>
+              </div>
+           </div>
+
+           <div className="pt-8 border-t border-emerald-500/5">
+              <span className="text-[8px] font-mono text-neutral-800 tracking-widest uppercase">Unauthorized access is prohibited.</span>
+           </div>
+        </div>
+
       </div>
     </section>
   );

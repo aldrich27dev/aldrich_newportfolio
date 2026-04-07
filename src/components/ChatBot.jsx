@@ -11,11 +11,36 @@ export default function ChatBot() {
     { role: 'assistant', content: 'Hello Kuys! Aldrich to HAHAH' }
   ]);
   const scrollRef = useRef(null);
+  const [showHint, setShowHint] = useState(true);
+
+  // 🚩 Suggestion Questions
+  const suggestions = [
+    "Ano tech stack mo?",
+    "Musta CampusWell?",
+    "Ano yung ALDRICH.OS?",
+    "Marunong ka mag-ayos ng phone?"
+  ];
+
+
+useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 400);
+    window.addEventListener('scroll', handleScroll);
+    
+    // 🚩 Auto-hide Hint Bubble after 5 seconds
+    const timer = setTimeout(() => {
+      setShowHint(false);
+    }, 5000);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timer);
+    };
+  }, []);
+
+  
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 400);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 400);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -26,21 +51,43 @@ export default function ChatBot() {
     }
   }, [messages, isTyping]);
 
-  const handleSendMessage = async (e) => {
-    e.preventDefault();
-    if (!input.trim() || isTyping) return;
+  // 🚩 New Feature: Typewriter Effect
+  const typeMessage = (fullText) => {
+    let currentText = "";
+    let index = 0;
 
-    const userMsg = input.trim();
-    // 🚩 Logic to include history so the AI can "learn" and stay "based"
-    const newMessages = [...messages, { role: 'user', content: userMsg }];
+    // Add empty assistant message first
+    setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
+
+    const interval = setInterval(() => {
+      if (index < fullText.length) {
+        currentText += fullText[index];
+        setMessages(prev => {
+          const updated = [...prev];
+          updated[updated.length - 1].content = currentText;
+          return updated;
+        });
+        index++;
+      } else {
+        clearInterval(interval);
+        setIsTyping(false); // Done typing
+      }
+    }, 25); // Speed in ms. 25-30 is ideal for "human" feel.
+  };
+
+  const handleSendMessage = async (e, manualText = null) => {
+    if (e) e.preventDefault();
     
+    const userMsg = manualText || input.trim();
+    if (!userMsg || isTyping) return;
+
+    const newMessages = [...messages, { role: 'user', content: userMsg }];
     setMessages(newMessages);
     setInput('');
     setIsTyping(true);
 
     try {
       const API_KEY = import.meta.env.VITE_GROQ_API_KEY; 
-      
       const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -153,23 +200,38 @@ export default function ChatBot() {
     }
   };
 
-  return (
+ return (
     <motion.div
       animate={{ 
-        bottom: isScrolled ? 128 : 24,
+        bottom: isScrolled ? 112 : 24, 
         right: 40 
       }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className="fixed z-[99999] flex flex-col items-end"
     >
+      {/* 🚩 Hint Bubble: Lalabas sa taas ng icon, mawawala after 5s or pag click */}
+      <AnimatePresence>
+        {showHint && !isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="absolute -top-12 right-0 whitespace-nowrap bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-3 py-1.5 rounded-full shadow-lg font-mono text-[10px]"
+          >
+            May question kuys? 👈 Chat mo 'ko!
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 10 }}
-            className="mb-4 w-[320px] md:w-[380px] h-[450px] bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col"
+            className="mb-4 w-[310px] md:w-[380px] h-[480px] bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col"
           >
+            {/* Header */}
             <div className="p-4 border-b border-neutral-100 dark:border-white/5 bg-neutral-50/50 dark:bg-white/5 flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <Terminal size={14} className="text-emerald-500" />
@@ -180,14 +242,13 @@ export default function ChatBot() {
               </button>
             </div>
 
+            {/* Chat Body */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 font-mono text-[12px] scrollbar-hide">
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[80%] px-3 py-2 rounded-2xl ${
                     msg.role === 'user' 
                       ? 'bg-emerald-500 text-white rounded-tr-none' 
-                      : msg.role === 'system'
-                      ? 'text-neutral-400 italic opacity-70'
                       : 'bg-neutral-100 dark:bg-white/5 text-neutral-800 dark:text-neutral-200 rounded-tl-none border border-transparent dark:border-white/5 shadow-sm'
                   }`}>
                     {msg.content}
@@ -195,7 +256,7 @@ export default function ChatBot() {
                 </div>
               ))}
               
-              {isTyping && (
+              {isTyping && messages[messages.length-1].role === 'user' && (
                 <div className="flex justify-start">
                   <div className="bg-neutral-100 dark:bg-white/5 px-3 py-2 rounded-2xl rounded-tl-none flex gap-1 items-center">
                     <span className="size-1.5 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
@@ -206,12 +267,28 @@ export default function ChatBot() {
               )}
             </div>
 
+            {/* Suggestion Chips */}
+            {!isTyping && messages.length < 5 && (
+              <div className="flex flex-wrap gap-2 px-4 pb-3">
+                {suggestions.map((text, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleSendMessage(null, text)}
+                    className="text-[10px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-3 py-1 rounded-full hover:bg-emerald-500 hover:text-white transition-all font-mono"
+                  >
+                    {text}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Input Form */}
             <form onSubmit={handleSendMessage} className="p-4 bg-neutral-50 dark:bg-white/5 border-t border-neutral-100 dark:border-white/5 flex gap-2">
               <input 
                 value={input} 
                 onChange={(e) => setInput(e.target.value)} 
                 disabled={isTyping}
-                placeholder={isTyping ? "Syncing..." : "Type command..."} 
+                placeholder={isTyping ? "Aldrich is typing..." : "Type command..."} 
                 className="flex-1 bg-transparent outline-none text-sm text-neutral-800 dark:text-neutral-200 placeholder:text-neutral-400 disabled:opacity-50" 
               />
               <button 
@@ -229,12 +306,16 @@ export default function ChatBot() {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(!isOpen)}
-        className={`size-14 rounded-2xl flex items-center justify-center shadow-2xl transition-all border ${
+        onClick={() => {
+          setIsOpen(!isOpen);
+          if (showHint) setShowHint(false);
+        }}
+        // 🚩 REQ: Smaller on mobile (size-12), standard on desktop (size-14)
+        className={`size-12 md:size-14 rounded-full md:rounded-2xl flex items-center justify-center shadow-emerald-500/20 shadow-xl transition-all border ${
           isOpen ? 'bg-neutral-900 text-white border-transparent' : 'bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-100 border-neutral-200 dark:border-white/10'
         }`}
       >
-        {isOpen ? <X size={24} /> : <MessageSquare size={24} strokeWidth={2} />}
+        {isOpen ? <X size={20} /> : <MessageSquare size={22} strokeWidth={2} />}
       </motion.button>
     </motion.div>
   );

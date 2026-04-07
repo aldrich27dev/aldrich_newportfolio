@@ -10,6 +10,7 @@ import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import MouseGlow from './components/MouseGlow.jsx'
+import ChatBot from './components/ChatBot.jsx'
 
 
 createRoot(document.getElementById('root')).render(
@@ -22,5 +23,7 @@ createRoot(document.getElementById('root')).render(
     <Footer />
     <ScrollToTop />
     <MouseGlow />
+    <ChatBot />
+
   </StrictMode>,
 )

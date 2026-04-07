@@ -3,7 +3,6 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Cpu, Monitor, Database, Code2, GraduationCap } from 'lucide-react';
 import * as SiIcons from 'react-icons/si';
 import * as FaIcons from 'react-icons/fa';
-import { section } from 'framer-motion/client';
 
 export default function About() {
   const targetRef = useRef(null);
@@ -33,6 +32,8 @@ export default function About() {
     { name: "ESP32", icon: <FaIcons.FaMicrochip className="text-emerald-500 text-[20px] md:text-[24px]" /> },
     { name: "Node.js", icon: getSiIcon("SiNodedotjs", "text-[#339933]") },
     { name: "Tailwind", icon: getSiIcon("SiTailwindcss", "text-[#06B6D4]") },
+    { name: "Git", icon: getSiIcon("SiGit", "text-[#F05032]") },
+    { name: "Photoshop", icon: getSiIcon("SiPhotoshop", "text-[#2496ED]") },
   ];
 
   const doubleStack = [...stack, ...stack];

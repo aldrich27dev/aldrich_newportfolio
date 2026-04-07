@@ -38,9 +38,9 @@ export default function Navbar() {
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 flex justify-between items-center">
         
         {/* Logo */}
-        <div className="font-black text-2xl tracking-tighter text-neutral-500 dark:text-neutral-500">
-          AN.
-        </div>
+<div className="font-black text-2xl tracking-tighter text-neutral-500 dark:text-neutral-500 select-none">
+  AN<span className="text-emerald-500 dark:text-emerald-400 animate-pulse">.</span>
+</div>
 
         {/* Desktop Links */}
         <div className="hidden md:flex gap-10 text-[11px] font-black uppercase tracking-[0.3em] text-neutral-500 dark:text-neutral-500">

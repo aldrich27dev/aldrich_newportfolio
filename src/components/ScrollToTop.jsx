@@ -44,7 +44,7 @@ export default function ScrollToTop() {
         >
           {/* Tactical OS Label */}
           <span className="text-[9px] font-mono opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-[0.2em] mb-1">
-            // Execute.Up
+            // GO UP!
           </span>
 
           <div className="size-14 bg-text-primary text-bg-primary border border-card-border rounded-2xl shadow-2xl flex items-center justify-center hover:scale-110 active:scale-90 transition-all duration-300 cursor-pointer overflow-hidden relative">

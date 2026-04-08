@@ -1,16 +1,41 @@
-# React + Vite
+# ⚡ ALDRICH_PORTFOLIO
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+| Technology |
+| :--- | :--- |
+| **Framework** | React 18 (Vite) |
+| **Styling** | Tailwind CSS + Framer Motion |
+| **Icons** | Lucide React |
+| **Backend/AI** | Groq Cloud API (Llama 3.1) |
+| **Deployment** | GitHub Pages |
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📟 CORE_MODULES
 
-## React Compiler
+- **Dynamic Contact Interface**: A minimalist, tactical node-based display for establishing communication.
+- **AI_INTERFACE**: A custom chatbot (Aldrich AI) integrated with Groq for real-time, witty terminal interaction.
+- **Responsive Terminal UI**: Fully optimized for mobile and desktop "Tactical Displays."
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## 🚀 INITIALIZING_LOCALLY
+
+To clone and run this terminal on your local machine:
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/aldrich27dev/aldrich_newportfolio.git](https://github.com/aldrich27dev/aldrich_newportfolio.git)
+
+Install dependencies:
+
+npm install
+
+
+Configure Environment Variables:
+Create a .env file in the root directory:
+
+Code snippet
+VITE_GROQ_API_KEY=your_secret_key_here
+Launch Interface:
+
+npm run dev

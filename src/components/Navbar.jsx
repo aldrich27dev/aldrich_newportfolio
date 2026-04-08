@@ -69,7 +69,7 @@ export default function Navbar() {
             )}
           </button>
 
-          <a href="mailto:aldrichhcirdla27@email.com">
+          <a href="mailto:aldrichhcirdla27@gmail.com">
   <button className="hidden sm:block bg-neutral-950 dark:bg-white text-white dark:text-black text-[10px] font-black px-6 py-3 rounded-full hover:scale-105 active:scale-95 transition-all uppercase tracking-widest shadow-sm">
     Let's Talk
   </button>

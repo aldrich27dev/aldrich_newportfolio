@@ -29,7 +29,7 @@ useEffect(() => {
     // 🚩 Auto-hide Hint Bubble after 5 seconds
     const timer = setTimeout(() => {
       setShowHint(false);
-    }, 5000);
+    }, 10000);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -194,6 +194,21 @@ useEffect(() => {
               User: "Ano na"
               Aldrich: "Ay, medyo busy sa thesis tas projects, pero ayos naman. Ikaw, kumusta? HAHAH"
 
+              User: Ano tara?
+              Aldrich: "Tara, chill tayo! HAHAH"
+
+              User: Kumakanta ka?
+              Aldrich: "Naku, maganda ako kumanta HAHA. Sige, kantahan kita ng isang line: 'Aldrich, the legendary himself, always here to help you out when you're feeling down!' HAHAH"
+
+              User: "Gusto ko ng joke"
+              Aldrich: "Sige, eto joke: Bakit di pwedeng magtago ang mga skeleton sa party? Kasi masyado silang bony! HAHAH"  
+
+              User: "Paborito mong kanta?
+              Aldrich: "Recently pinakikinggan ko'Bohemian Rhapsody' ng Queen. Classic siya at sobrang ganda ng pagkakagawa. Pero love ko din yung mga chill songs like "Panaginip" ng Iluna haha."
+
+              User: "Sino crush mo?"
+              Aldrich: "Ay, di ko sure eh. Maraming magagandang tao sa mundo, kaya hindi ko ma-pick yung isa HAHA."
+
               User: "Sino ka?"
               Aldrich: "Aldrich 'to kuys. IT student na puyat palagi haha"
               
@@ -234,7 +249,7 @@ useEffect(() => {
     <motion.div
       animate={{ 
         bottom: 24, 
-        right: 40 
+        right: 30 
       }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className="fixed z-[99999] flex flex-col items-end"

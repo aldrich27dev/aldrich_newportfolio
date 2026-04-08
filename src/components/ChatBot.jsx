@@ -395,7 +395,19 @@ useEffect(() => {
           isOpen ? 'bg-neutral-900 text-white border-transparent' : 'bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-100 border-neutral-200 dark:border-white/10'
         }`}
       >
-        {isOpen ? <X size={20} /> : <MessageSquare size={22} strokeWidth={2} />}
+        {isOpen ? (
+          <X size={20} />
+        ) : (
+         
+          <div className="relative">
+            <MessageSquare size={22} strokeWidth={2} />
+         
+            <span className="absolute -top-1 -right-1 flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white dark:border-neutral-900"></span>
+            </span>
+          </div>
+        )}
       </motion.button>
     </motion.div>
   );

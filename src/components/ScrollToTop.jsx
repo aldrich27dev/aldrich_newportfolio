@@ -53,7 +53,7 @@ export default function ScrollToTop() {
         
         onClick={scrollToTop}
         // 🚩 Centered and positioned below navbar
-        className="fixed top-[75px] left-1/2 -translate-x-1/2 z-[9998] group flex flex-col items-center"
+        className="fixed top-[75px] left-1/2 -translate-x-1/2 z-[1] group flex flex-col items-center"
       >
         <div className="relative">
           {/* 🚩 The Floating Body */}

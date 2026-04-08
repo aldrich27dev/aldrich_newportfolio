@@ -103,9 +103,9 @@ export default function Navbar() {
                   {link.name}
                 </a>
               ))}
-              <button className="w-full bg-neutral-950 dark:bg-white text-white dark:text-black py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px]">
+              {/* <button className="w-full bg-neutral-950 dark:bg-white text-white dark:text-black py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px]">
                 CONTACT ME
-              </button>
+              </button> */}
             </div>
           </motion.div>
         )}

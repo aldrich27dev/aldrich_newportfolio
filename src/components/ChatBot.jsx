@@ -79,48 +79,53 @@ useEffect(() => {
 
 
   const handleSendMessage = async (e, manualText = null) => {
-    if (e) e.preventDefault();
-    
-    const userMsg = manualText || input.trim();
-    if (!userMsg || isTyping) return;
+  if (e) e.preventDefault();
+  
+  const userMsg = manualText || input.trim();
+  if (!userMsg || isTyping) return;
 
-    const newMessages = [...messages, { role: 'user', content: userMsg }];
-    setMessages(newMessages);
-    setInput('');
-    setIsTyping(true);
+  // 1. I-set ang bagong messages state
+  const newMessages = [...messages, { role: 'user', content: userMsg }];
+  setMessages(newMessages);
+  setInput('');
+  setIsTyping(true);
 
-    try {
-  const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
+  try {
+    const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
 
-  const pastMessages = Array.isArray(newMessages) ? newMessages.slice(-10) : [];
+    // 2. Filter logic: Mahalaga 'to para hindi mag-error ang API format
+    // Kinukuha lang natin ang 'user' at 'assistant' roles, at nililimitahan ang length
+    const pastMessages = newMessages
+      .filter(msg => msg.role !== 'system')
+      .slice(-6); // 6 messages lang para tipid sa tokens at iwas error
 
-  const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: "llama-3.1-8b-instant",
-      messages: [
-        aldrichSystemPrompt,
-        ...pastMessages,
-      ],
-      temperature: 0.7,
-      top_p: 0.8,
-      max_tokens: 150,
-    }),
-  });
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "llama-3.1-8b-instant",
+        messages: [
+          aldrichSystemPrompt, // Ang personality anchor mo
+          ...pastMessages,     // Ang history ng usapan niyo
+        ],
+        temperature: 0.7,
+        top_p: 0.8,
+        max_tokens: 150,
+      }),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (!response.ok) {
-      // Mas okay na i-throw ito para diretso siya sa catch block
+    if (!response.ok) {
       throw new Error(data.error?.message || "Down si Groq HAHAHA");
     }
 
     if (data.choices?.[0]?.message?.content) {
       const text = data.choices[0].message.content;
+      // Gamit tayo ng functional update para siguradong latest state ang nakukuha
       setMessages(prev => [...prev, { role: 'assistant', content: text }]);
     }
 
@@ -138,7 +143,6 @@ useEffect(() => {
         "HAHAHAH solid ka talaga🔥teka parang nag-short yung lead sa pcb. wait lang pre.",
         "Di ko mabuksan yung serial monitor lods, check ko lang connection haha."
       ],
-     
       random: [
         "Wait lang ha, mahina ata net dito sa caloocan. under development pa kasi HAHA.",
         "Teka pre, kape lang ako saglit. puyat is life talaga haha.",
@@ -148,30 +152,29 @@ useEffect(() => {
       ]
     };
 
-    const input = userInput.toLowerCase().trim();
+    // Gamitin ang userMsg (ito yung current na ininput ni user)
+    const checkInput = userMsg.toLowerCase().trim();
     let selectedCategory;
 
-  
-    if (input.includes("code") || input.includes("react") || input.includes("laravel") || input.includes("api") || input.includes("bug")) {
+    if (checkInput.includes("code") || checkInput.includes("react") || checkInput.includes("laravel") || checkInput.includes("api") || checkInput.includes("bug")) {
       selectedCategory = errorPool.tech;
-    } else if (input.includes("esp32") || input.includes("hardware") || input.includes("wiring") || input.includes("jammer") || input.includes("pcb")) {
+    } else if (checkInput.includes("esp32") || checkInput.includes("hardware") || checkInput.includes("wiring") || checkInput.includes("jammer") || checkInput.includes("pcb") || checkInput.includes("os")) {
       selectedCategory = errorPool.hardware;
     } else {
-    
       selectedCategory = errorPool.random;
     }
 
-   
     const randomError = selectedCategory[Math.floor(Math.random() * selectedCategory.length)];
 
     setMessages(prev => [...prev, { 
       role: 'assistant', 
       content: randomError 
     }]);
-    } finally {
-      setIsTyping(false);
-    }
-  };
+
+  } finally {
+    setIsTyping(false);
+  }
+};
 
  return (
     <motion.div

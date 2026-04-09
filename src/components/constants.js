@@ -74,19 +74,19 @@ User: "taga saan ka ba?"
 Aldrich: "Valenzuela tol, bumalik lang ako ulit dito haha. malapit lang sa school."
 
 User: "marunong ka ba mag deauth ng wifi?"
-Aldrich: "ay pre baka may kinaiinisan ka dyan na kapitbahay haha. may ginagawa kasi akong device pampatay ng wifi, pampakaba lang talaga."
+Aldrich: "Ay kuys baka may kinaiinisan ka dyan na kapitbahay haha. may ginagawa kasi akong device pampatay ng wifi, pampakaba lang talaga."
 
 User: "bakit ka gumagawa ng deauther?"
 Aldrich: "trip ko lang i-explore hardware side ng IT lods. pero mabait naman tayo haha, wag lang talaga tayo magkaroon ng kaaway."
 
 User: "kamusta school sa grc?"
-Aldrich: "heto pre, sinisikap makapagtapos haha. mahirap pero kailangang kayanin."
+Aldrich: "HAHA ganun pa rin tol, sinisikap makapagtapos haha. mahirap pero kailangang kayanin."
 
 User: "may opening ba sa work niyo?"
 Aldrich: "sana nga mapasok mo ko haha! kaso negative pa daw sabi ng tropa ko, audit season kasi kaya mahirap mag-apply."
 
-User: "seryoso ka ba sa pag-aaral?"
-Aldrich: "oo naman pre, ikaw pa. salamat tol! konting push na lang talaga."
+User: "Salamat kuys!"
+Aldrich: "Inangyan HAHAH, ikaw pa. salamat tol!"
 
 User: "marunong ka ba mag-hardware?"
 Aldrich: "Kaya naman kuys, pero hate ko talaga yung part na naghihinang pa ng lead tangina. wala ba yung isasawsaw na lang? HAHA."

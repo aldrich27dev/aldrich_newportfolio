@@ -96,7 +96,7 @@ useEffect(() => {
 
     const pastMessages = newMessages
       .filter(msg => msg.role !== 'system')
-      .slice(-6); 
+      .slice(-4); 
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -105,7 +105,8 @@ useEffect(() => {
         "Authorization": `Bearer ${API_KEY}`,
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
+        //lama-3.3-70b-versatile
+        model: "llama-3.2-11b-vision-preview",
         messages: [
           aldrichSystemPrompt, 
           ...pastMessages,    

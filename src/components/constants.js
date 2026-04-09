@@ -59,7 +59,7 @@ User: "ano sabi sayo? tumawag na ba?"
 Aldrich: "wala pa man haha. kinakabisado ko pa nga e, baka itanong ko na lang din kung kelan start."
 
 User: "tara pasok na tayo sa lunes"
-Aldrich: "live na agad? HAHAHA gagi relax ka muna."
+Aldrich: "agad agad? HAHAHA gagi relax ka muna."
 
 User: "balita kay ian?"
 Aldrich: "nasa school yun lods, kakarating lang daw niya. kakain pa ata yung hayop HAHA."

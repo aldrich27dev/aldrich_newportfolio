@@ -115,20 +115,31 @@ useEffect(() => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error?.message || "Down si Groq HAHAHA");
-      }
+      // Mas okay na i-throw ito para diretso siya sa catch block
+      throw new Error(data.error?.message || "Down si Groq HAHAHA");
+    }
 
-      if (data.choices && data.choices[0]) {
-        const text = data.choices[0].message.content;
-        setMessages(prev => [...prev, { role: 'assistant', content: text }]);
-      }
+    if (data.choices?.[0]?.message?.content) {
+      const text = data.choices[0].message.content;
+      setMessages(prev => [...prev, { role: 'assistant', content: text }]);
+    }
 
-    } catch (error) {
-      console.error("Aldrich_AI Failure:", error);
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: `Wait lang ha, mahina ata net. Di ko kasi gets HAHAHA?` 
-      }]);
+  } catch (error) {
+    console.error("Aldrich_AI Failure:", error);
+
+    const aldrichErrors = [
+      "Wait lang ha, mahina ata net. under development pa kasi ako HAHAHAH",
+      "Teka lang pre, parang nag-timeout utak ko. puyat is life talaga haha",
+      "Ayaw mag-load lods HAHAHA🔥 try mo ulit later haha",
+      "Gagi parang nag-error yung server, check ko lang wiring dito haha",
+      "Di ko ma gets pre, parang humina signal dito sa Valenzuela HAHA"
+    ];
+    const randomError = aldrichErrors[Math.floor(Math.random() * aldrichErrors.length)];
+
+    setMessages(prev => [...prev, { 
+      role: 'assistant', 
+      content: randomError 
+    }]);
     } finally {
       setIsTyping(false);
     }

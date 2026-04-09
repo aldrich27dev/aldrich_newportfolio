@@ -53,12 +53,12 @@ useEffect(() => {
     }
   }, [messages, isTyping]);
 
-  // 🚩 New Feature: Typewriter Effect
+ 
   const typeMessage = (fullText) => {
     let currentText = "";
     let index = 0;
 
-    // Add empty assistant message first
+
     setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
 
     const interval = setInterval(() => {
@@ -72,9 +72,9 @@ useEffect(() => {
         index++;
       } else {
         clearInterval(interval);
-        setIsTyping(false); // Done typing
+        setIsTyping(false); 
       }
-    }, 25); // Speed in ms. 25-30 is ideal for "human" feel.
+    }, 25); 
   };
 
 
@@ -84,7 +84,7 @@ useEffect(() => {
   const userMsg = manualText || input.trim();
   if (!userMsg || isTyping) return;
 
-  // 1. I-set ang bagong messages state
+
   const newMessages = [...messages, { role: 'user', content: userMsg }];
   setMessages(newMessages);
   setInput('');
@@ -93,11 +93,10 @@ useEffect(() => {
   try {
     const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
 
-    // 2. Filter logic: Mahalaga 'to para hindi mag-error ang API format
-    // Kinukuha lang natin ang 'user' at 'assistant' roles, at nililimitahan ang length
+
     const pastMessages = newMessages
       .filter(msg => msg.role !== 'system')
-      .slice(-6); // 6 messages lang para tipid sa tokens at iwas error
+      .slice(-6); 
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -108,8 +107,8 @@ useEffect(() => {
       body: JSON.stringify({
         model: "llama-3.1-8b-instant",
         messages: [
-          aldrichSystemPrompt, // Ang personality anchor mo
-          ...pastMessages,     // Ang history ng usapan niyo
+          aldrichSystemPrompt, 
+          ...pastMessages,    
         ],
         temperature: 0.7,
         top_p: 0.8,
@@ -125,7 +124,6 @@ useEffect(() => {
 
     if (data.choices?.[0]?.message?.content) {
       const text = data.choices[0].message.content;
-      // Gamit tayo ng functional update para siguradong latest state ang nakukuha
       setMessages(prev => [...prev, { role: 'assistant', content: text }]);
     }
 
@@ -143,6 +141,13 @@ useEffect(() => {
         "HAHAHAH solid ka talaga🔥teka parang nag-short yung lead sa pcb. wait lang pre.",
         "Di ko mabuksan yung serial monitor lods, check ko lang connection haha."
       ],
+      short: [
+        "Haha wait lang pre, parang nawalan ako ng signal. Ano ulit yun?",
+        "Sige lang lods, pero teka lang... nag-hang ata utak ko HAHA. Wait lang.",
+        "Omsim pre! Kaso wait lang, parang nag-timeout net ko HAHA.",
+        "Gagi, pati signal dito sa Caloocan tumatawa na rin HAHA. Wait lang lods.",
+        "Wait lang ha, puyat is life talaga—nag-error saglit haha."
+      ],
       random: [
         "Wait lang ha, mahina ata net dito sa caloocan. under development pa kasi HAHA.",
         "Teka pre, kape lang ako saglit. puyat is life talaga haha.",
@@ -152,15 +157,19 @@ useEffect(() => {
       ]
     };
 
-    // Gamitin ang userMsg (ito yung current na ininput ni user)
+
     const checkInput = userMsg.toLowerCase().trim();
     let selectedCategory;
 
-    if (checkInput.includes("code") || checkInput.includes("react") || checkInput.includes("laravel") || checkInput.includes("api") || checkInput.includes("bug")) {
+    if (checkInput.includes("code") || checkInput.includes("react") || checkInput.includes("laravel") || checkInput.includes("api")) {
       selectedCategory = errorPool.tech;
-    } else if (checkInput.includes("esp32") || checkInput.includes("hardware") || checkInput.includes("wiring") || checkInput.includes("jammer") || checkInput.includes("pcb") || checkInput.includes("os")) {
+    } else if (checkInput.includes("esp32") || checkInput.includes("hardware") || checkInput.includes("wiring") || checkInput.includes("os")) {
       selectedCategory = errorPool.hardware;
-    } else {
+    } 
+    else if (checkInput.length <= 5 || checkInput.includes("haha") || checkInput.includes("sige") || checkInput.includes("okay")) {
+      selectedCategory = errorPool.short;
+    } 
+    else {
       selectedCategory = errorPool.random;
     }
 

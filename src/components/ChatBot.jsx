@@ -105,8 +105,7 @@ useEffect(() => {
         "Authorization": `Bearer ${API_KEY}`,
       },
       body: JSON.stringify({
-        //lama-3.3-70b-versatile
-        model: "llama-3.2-11b-vision-preview",
+        model: "llama-3.3-70b-versatile",
         messages: [
           aldrichSystemPrompt, 
           ...pastMessages,    

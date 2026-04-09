@@ -127,14 +127,42 @@ useEffect(() => {
   } catch (error) {
     console.error("Aldrich_AI Failure:", error);
 
-    const aldrichErrors = [
-      "Wait lang ha, mahina ata net. under development pa kasi ako HAHAHAH",
-      "Teka lang pre, parang nag-timeout utak ko. puyat is life talaga haha",
-      "Ayaw mag-load lods HAHAHA🔥 try mo ulit later haha",
-      "Gagi parang nag-error yung server, check ko lang wiring dito haha",
-      "Di ko ma gets pre, parang humina signal dito sa Valenzuela HAHA"
-    ];
-    const randomError = aldrichErrors[Math.floor(Math.random() * aldrichErrors.length)];
+    const errorPool = {
+      tech: [
+        "Wait lang kuys, parang may bug sa code ko HAHAHA. check ko lang documentation.",
+        "Gagii, nag-error ata yung deployment. puyat lang to lods, try mo ulit.",
+        "Ay gagi nag crash yung server HAHAHA. debug ko muna saglit pre."
+      ],
+      hardware: [
+        "Teka lang, parang uminit yung device ko HAHAHAHA. check ko lang wiring.",
+        "HAHAHAH solid ka talaga🔥teka parang nag-short yung lead sa pcb. wait lang pre.",
+        "Di ko mabuksan yung serial monitor lods, check ko lang connection haha."
+      ],
+     
+      random: [
+        "Wait lang ha, mahina ata net dito sa caloocan. under development pa kasi HAHA.",
+        "Teka pre, kape lang ako saglit. puyat is life talaga haha.",
+        "Parang nag-timeout utak ko lods haha. ano ulit yun? try mo ulit i-send.",
+        "Gagi nawalan ata ako ng signal haha. wait lang pre.",
+        "Di ko ma-gets, parang sabog pa utak ko sa puyat. ano ulit yun?"
+      ]
+    };
+
+    const input = userInput.toLowerCase().trim();
+    let selectedCategory;
+
+  
+    if (input.includes("code") || input.includes("react") || input.includes("laravel") || input.includes("api") || input.includes("bug")) {
+      selectedCategory = errorPool.tech;
+    } else if (input.includes("esp32") || input.includes("hardware") || input.includes("wiring") || input.includes("jammer") || input.includes("pcb")) {
+      selectedCategory = errorPool.hardware;
+    } else {
+    
+      selectedCategory = errorPool.random;
+    }
+
+   
+    const randomError = selectedCategory[Math.floor(Math.random() * selectedCategory.length)];
 
     setMessages(prev => [...prev, { 
       role: 'assistant', 

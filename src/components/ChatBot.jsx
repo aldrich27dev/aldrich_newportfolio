@@ -127,7 +127,7 @@ useEffect(() => {
       console.error("Aldrich_AI Failure:", error);
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: `Wait lang ha, mahina ata net. Ano nga ulit yon?` 
+        content: `Wait lang ha, mahina ata net. Di ko kasi gets HAHAHA?` 
       }]);
     } finally {
       setIsTyping(false);

@@ -105,6 +105,10 @@ useEffect(() => {
         "Authorization": `Bearer ${API_KEY}`,
       },
       body: JSON.stringify({
+        //meta-llama/llama-4-scout-17b-16e-instruct
+        //moonshotai/kimi-k2-instruct 
+        //moonshotai/kimi-k2-instruct-0905
+        //llama-3.1-8b-instant
         model: "llama-3.3-70b-versatile",
         messages: [
           aldrichSystemPrompt, 

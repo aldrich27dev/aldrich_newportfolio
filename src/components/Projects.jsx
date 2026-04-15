@@ -8,15 +8,15 @@ export default function Projects() {
       color: "bg-emerald-500",
       glow: "shadow-emerald-500/20",
       desc: "Student mental health & wellness management system.",
-      github: "https://github.com/yourusername/campuswell" 
+      github: "https://github.com/aldrich27dev/campus_well" 
     },
     { 
-      name: "Cess Sweetz", 
-      type: "Website // Cake & Pastry", 
-      color: "bg-pink-500 dark:bg-pink-600", 
-      glow: "shadow-pink-500/20",
-      desc: "Brand identity and web platform for a pastry shop.",
-      github: "https://github.com/aldrich27dev/cess" 
+      name: "GRC | Buddy", 
+      type: "Full-stack // ChatApp", 
+      color: "bg-red-500 dark:bg-red-600", 
+      glow: "shadow-red-500/20",
+      desc: " A real-time student matching chat platform for Global Reciprocal Colleges.",
+      github: "https://github.com/aldrich27dev/grc_buddy" 
     },
     { 
       name: "Simple Calculator", 

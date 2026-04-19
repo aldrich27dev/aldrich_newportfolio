@@ -4,7 +4,8 @@ import { MessageSquare, X, Send, Terminal } from 'lucide-react';
 import { aldrichSystemPrompt } from './constants.js';
 
 export default function ChatBot() {
-  const greetingText = 'Hello Kuys! Aldrich to HAHAH';
+  const greetingText = 'Hello Kuys! Aldrich to HAHAHA';
+  const followUpGreetingText = 'Kumusta na?';
   const [isOpen, setIsOpen] = useState(false);
   const [, setIsScrolled] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -45,9 +46,11 @@ export default function ChatBot() {
   useEffect(() => {
     if (isOpen && !hasPlayedGreeting && messages.length === 0) {
       setHasPlayedGreeting(true);
-      showAssistantMessage(greetingText, 1000);
+      showAssistantMessage(greetingText, 1000, () => {
+        showAssistantMessage(followUpGreetingText, 850);
+      });
     }
-  }, [greetingText, hasPlayedGreeting, isOpen, messages.length]);
+  }, [followUpGreetingText, greetingText, hasPlayedGreeting, isOpen, messages.length]);
 
   useEffect(() => {
     return () => {
@@ -57,7 +60,7 @@ export default function ChatBot() {
     };
   }, []);
 
-  const showAssistantMessage = (fullText, delay = 1200) => {
+  const showAssistantMessage = (fullText, delay = 1200, onComplete) => {
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
     }
@@ -68,6 +71,9 @@ export default function ChatBot() {
       setMessages(prev => [...prev, { role: 'assistant', content: fullText }]);
       typingTimeoutRef.current = null;
       setIsTyping(false);
+      if (onComplete) {
+        onComplete();
+      }
     }, delay);
   };
 

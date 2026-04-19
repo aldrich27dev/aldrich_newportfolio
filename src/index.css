@@ -3,24 +3,23 @@
 @theme {
   --color-bg-primary: var(--bg-color);
   --color-text-primary: var(--text-primary);
-  /* Added a dedicated Heading color to prevent "White on White" in Day Mode */
-  --color-text-heading: var(--text-heading); 
+  --color-text-heading: var(--text-heading);
   --color-card: var(--card-bg);
   --color-card-border: var(--card-border);
 }
 
 :root {
   --bg-color: #ffffff;
-  --text-primary: #404040;   /* Balanced gray for body text */
-  --text-heading: #0a0a0a;   /* Near black for high-visibility titles */
+  --text-primary: #404040;
+  --text-heading: #0a0a0a;
   --card-bg: #f9f9f9;
   --card-border: rgba(0, 0, 0, 0.08);
 }
 
 html.dark {
   --bg-color: #050505;
-  --text-primary: #a3a3a3;   /* Neutral gray for dark mode body */
-  --text-heading: #ffffff;   /* Pure white for dark mode titles */
+  --text-primary: #a3a3a3;
+  --text-heading: #ffffff;
   --card-bg: #0a0a0a;
   --card-border: rgba(255, 255, 255, 0.05);
 }
@@ -28,15 +27,72 @@ html.dark {
 body {
   background-color: var(--bg-color);
   color: var(--text-primary);
-  /* Removed @apply transition-colors from body to prevent 'flashing' on load */
   transition: background-color 0.5s ease;
   font-feature-settings: "ss01", "ss02", "cv01", "cv02";
   margin: 0;
 }
 
-/* 🚩 THE FIX: REMOVED the '*' border reset 🚩 */
-/* Global border resets often force invisible borders on everything. 
-   Only apply borders where you explicitly call them in your components. */
+.skeleton-block {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    rgba(115, 115, 115, 0.12) 0%,
+    rgba(115, 115, 115, 0.2) 50%,
+    rgba(115, 115, 115, 0.12) 100%
+  );
+}
+
+html.dark .skeleton-block {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.14) 50%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+}
+
+.skeleton-block::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.45),
+    transparent
+  );
+  animation: skeleton-shimmer 1.3s ease-in-out infinite;
+}
+
+html.dark .skeleton-block::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
+}
+
+.animate-in {
+  animation: fade-in 0.35s ease-out;
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
 .backdrop-blur-md {
   -webkit-backdrop-filter: blur(12px);

@@ -3,14 +3,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import profilePic from '/images/aldrich.webp';
 import hoverPic from '/images/Gemini_Generated_Image_chfck5chfck5chfc.webp';
 
+const TITLES = ["Full-Stack Dev.", "AI & Cloud Dev.", "Systems Dev."];
+
 export default function Hero() {
   const [showBubble, setShowBubble] = useState(false);
   const [greeting, setGreeting] = useState('');
   const [isProfileHovered, setIsProfileHovered] = useState(false);
-  const [isVisible, setIsVisible] = useState(false); 
+  const [isVisible, setIsVisible] = useState(false);
+  const [titleIndex, setTitleIndex] = useState(0);
   const isFirstRender = useRef(true);
 
+  // --- Title Cycling Logic ---
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTitleIndex((prev) => (prev + 1) % TITLES.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
 
+  // --- Theme Observer ---
   useEffect(() => {
     const checkTheme = () => {
       const isDark = document.documentElement.classList.contains('dark');
@@ -21,7 +32,7 @@ export default function Hero() {
       const hasShownPermanently = localStorage.getItem('dark_protest_permanent');
       if (!isDark && !hasShownPermanently) {
         setShowBubble(true);
-        localStorage.setItem('dark_protest_permanent', 'true'); 
+        localStorage.setItem('dark_protest_permanent', 'true');
         const timer = setTimeout(() => setShowBubble(false), 2000);
         return () => clearTimeout(timer);
       } else if (isDark) {
@@ -34,10 +45,9 @@ export default function Hero() {
     return () => observer.disconnect();
   }, []);
 
-  
+  // --- Greeting Logic ---
   useEffect(() => {
     const hasBeenGreeted = sessionStorage.getItem('has_been_greeted');
-
     if (!hasBeenGreeted) {
       const hour = new Date().getHours();
       let text = '';
@@ -48,12 +58,7 @@ export default function Hero() {
       setGreeting(text);
       setIsVisible(true);
       sessionStorage.setItem('has_been_greeted', 'true');
-
-     
-      const hideTimer = setTimeout(() => {
-        setIsVisible(false);
-      }, 5000);
-
+      const hideTimer = setTimeout(() => setIsVisible(false), 5000);
       return () => clearTimeout(hideTimer);
     }
   }, []);
@@ -63,6 +68,7 @@ export default function Hero() {
   return (
     <section className="pt-32 pb-4 px-4 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-4 relative">
       
+      {/* Dark Mode Protest Bubble */}
       <AnimatePresence>
         {showBubble && (
           <motion.div
@@ -73,9 +79,9 @@ export default function Hero() {
             transition={{ type: "spring", stiffness: 500, damping: 30, mass: 0.8 }}
             className="fixed top-10 left-1/2 z-[9999] pointer-events-none"
           >
-            <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 px-8 py-3 rounded-2xl shadow-[0_20px_50_rgba(0,0,0,0.15)] flex items-center justify-center">
-              <p className="text-sm font-extrabold tracking-tight text-neutral-800 dark:text-neutral-100 flex items-center gap-3">
-                <span className="text-xl">🌙</span>
+            <div className="group relative bg-neutral-950 border border-neutral-800 px-6 py-3 flex items-center gap-4 transition-all hover:border-emerald-500/50">
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+              <p className="text-[10px] font-mono tracking-[0.2em] uppercase text-emerald-500 font-bold">
                 ITS BETTER WHEN ITS DARK
               </p>
             </div>
@@ -83,6 +89,7 @@ export default function Hero() {
         )}
       </AnimatePresence>
 
+      {/* Main Content */}
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -98,7 +105,20 @@ export default function Hero() {
 
         <h1 className="text-5xl md:text-8xl font-bold tracking-tight leading-[0.9]">
           ALDRICH NAAG <br />
-          <span className="text-4xl md:text-6xl text-neutral-400 dark:text-neutral-700">Front-End Dev.</span>
+          <div className="relative h-[60px] md:h-[80px] overflow-hidden mt-2">
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={TITLES[titleIndex]}
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -30, opacity: 0 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                className="absolute left-0 text-4xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-neutral-300 via-neutral-500 to-neutral-700 dark:from-neutral-100 dark:via-neutral-400 dark:to-neutral-600"
+              >
+                {TITLES[titleIndex]}
+              </motion.span>
+            </AnimatePresence>
+          </div>
         </h1>
 
         <p className="text-neutral-500 dark:text-neutral-400 mt-8 text-lg max-w-md leading-relaxed font-medium">
@@ -106,6 +126,7 @@ export default function Hero() {
         </p>
       </motion.div>
 
+      {/* Profile Sidebar */}
       <motion.div className="bento-card md:col-span-1 p-8 flex flex-col items-center justify-center text-center group/profile cursor-pointer relative">
         <div 
           className="relative group/profile cursor-pointer mb-6"

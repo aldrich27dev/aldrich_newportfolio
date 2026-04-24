@@ -55,7 +55,7 @@ export default function About() {
               Academic
             </h3>
             <p className="text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed">
-              3rd Year <span className="text-neutral-500 dark:text-neutral-500 font-black">Information Technology</span> student. Focused on systems architecture and networking.
+              3rd Year <span className="text-neutral-500 dark:text-neutral-500 font-black">Information Technology</span> student  at <span className="text-white dark:text-neutral-500 font-bold">Global Reciprocal Colleges (GRC)</span>.
             </p>
           </div>
         </motion.div>

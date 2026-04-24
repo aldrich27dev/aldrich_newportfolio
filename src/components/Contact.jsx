@@ -104,7 +104,7 @@ export default function Contact() {
           </span>
         </div>
         <h2 className="text-xl md:text-5xl font-black tracking-tighter uppercase leading-none">
-          <span className="text-text-primary">CONTACT_NODE.</span>
+          <span className="text-text-primary">CONTACT ME.</span>
         </h2>
       </motion.div>
 

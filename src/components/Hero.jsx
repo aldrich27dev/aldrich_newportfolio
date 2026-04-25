@@ -103,7 +103,7 @@ export default function Hero() {
           </span>
         </div>
 
-        <h1 className="text-5xl md:text-8xl font-bold tracking-tight leading-[0.9]">
+        <h1 className="text-5xl md:text-8xl font-bold tracking-tight leading-[0.9] text-transparent bg-clip-text bg-gradient-to-r from-neutral-400 via-neutral-500 to-neutral-800">
           ALDRICH NAAG <br />
           <div className="relative h-[60px] md:h-[80px] overflow-hidden mt-2">
             <AnimatePresence mode="wait">
@@ -120,10 +120,13 @@ export default function Hero() {
             </AnimatePresence>
           </div>
         </h1>
+        <p className="text-lg md:text-xl text-neutral-500 max-w-lg leading-relaxed">
+    <span className="text-neutral-500 font-medium text-transparent bg-clip-text bg-gradient-to-r from-neutral-400 via-neutral-500 to-neutral-700">focused on high-performance systems and embedded hardware.</span> 
+  </p>
 
-        <p className="text-neutral-500 dark:text-neutral-400 mt-8 text-lg max-w-md leading-relaxed font-medium">
+        {/* <p className="text-neutral-500 dark:text-neutral-400 mt-1 text-2lg max-w-md leading-relaxed text-transparent bg-clip-text bg-gradient-to-r from-neutral-300 via-neutral-500 to-neutral-700">
           3rd year IT student focused on high-performance systems and embedded hardware.
-        </p>
+        </p> */}
       </motion.div>
 
       {/* Profile Sidebar */}

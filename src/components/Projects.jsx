@@ -9,7 +9,7 @@ export default function Projects() {
       color: "bg-emerald-500", 
       glow: "shadow-emerald-500/20", 
       desc: "Student mental health & wellness management system.", 
-      tech: ["react", "nodejs", "laravel", "tailwindcss", "github", "git"], 
+      tech: ["react", "nodejs", "laravel", "tailwindcss", "git", "github"], 
       github: "https://github.com/aldrich27dev/campus_well", 
       live: "https://aldrich27dev.github.io/campus_well/" 
     },
@@ -19,7 +19,7 @@ export default function Projects() {
       color: "bg-red-500", 
       glow: "shadow-red-500/20", 
       desc: "A real-time student matching chat platform for Global Reciprocal Colleges.", 
-      tech: ["react", "firebase", "tailwindcss", "github", "git"], 
+      tech: ["react", "firebase", "tailwindcss", "git", "github"], 
       github: "https://github.com/aldrich27dev/grc_buddy", 
       live: "https://aldrich27dev.github.io/grc_buddy/" 
     },
@@ -29,7 +29,7 @@ export default function Projects() {
       color: "bg-blue-500", 
       glow: "shadow-blue-500/20", 
       desc: "Functional calc built with modern stack.", 
-      tech: ["react", "tailwindcss", "github", "git"], 
+      tech: ["react", "tailwindcss", "git", "github"], 
       github: "https://github.com/aldrich27dev/calcu", 
       live: "https://aldrich27dev.github.io/calcu/" 
     },
@@ -39,7 +39,7 @@ export default function Projects() {
       color: "bg-yellow-500", 
       glow: "shadow-yellow-500/20",
       desc: "Gamified quiz platform.", 
-      tech: ["react", "typescript", "github", "git"], 
+      tech: ["react", "tailwindcss", "typescript", "git", "github"], 
       github: "https://github.com/aldrich27dev/myquizapp", 
       live: "https://aldrich27dev.github.io/myquizapp/" 
     }
@@ -48,9 +48,9 @@ export default function Projects() {
   return (
     <section id="projects" className="py-24 px-4 max-w-6xl mx-auto transition-colors duration-500">
       <div className="mb-12">
-        <span className="text-emerald-600 dark:text-emerald-400 font-mono text-[10px] uppercase tracking-[0.4em] font-bold">
-          // System_Records: Executing_Fetch
-        </span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.45em] text-emerald-600">
+              RECENT
+            </span>
         <h2 className="text-2xl md:text-5xl font-black tracking-tighter uppercase mt-4 text-text-primary">
           Projects
         </h2>
@@ -74,7 +74,7 @@ export default function Projects() {
               <div className={`size-12 ${project.color} ${project.glow} rounded-2xl flex items-center justify-center`}>
                 <div className="size-4 border-2 border-white/30 rounded-full animate-pulse" />
               </div>
-              <span className="text-[10px] font-mono text-neutral-400">NODE_0{i + 1}</span>
+              <span className="text-[10px] text-neutral-400">NODE_0{i + 1}</span>
             </div>
 
             {/* Content */}
@@ -101,10 +101,10 @@ export default function Projects() {
 
             {/* Footer Links */}
             <div className="relative z-10 flex gap-6 mt-6 pt-6 border-t border-card-border">
-              <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 hover:text-emerald-500 transition-colors">
+              <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-widest text-neutral-500 hover:text-emerald-500 transition-colors">
                 Repository
               </a>
-              <a href={project.live} target="_blank" rel="noopener noreferrer" className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 hover:text-emerald-500 transition-colors">
+              <a href={project.live} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-widest text-neutral-500 hover:text-emerald-500 transition-colors">
                 Live View
               </a>
             </div>

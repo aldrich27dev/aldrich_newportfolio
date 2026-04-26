@@ -222,12 +222,12 @@ export default function ChatBot() {
             exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
             whileHover={{ scale: 1.05 }}
             className="absolute -top-14 right-0 md:-right-2 whitespace-nowrap 
-                       bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md 
-                       text-neutral-900 dark:text-white 
+                       bg-card/90 backdrop-blur-md 
+                       text-text-heading dark:text-text-heading 
                        px-4 py-2 rounded-2xl rounded-br-none 
                        shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)]
-                       border border-neutral-200/50 dark:border-white/10 
-                       font-mono text-[10px] md:text-[11px] font-medium z-[99999]"
+                       border border-card-border 
+                       text-[10px] md:text-[11px] font-medium z-[99999]"
           >
             <div className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">
@@ -240,7 +240,7 @@ export default function ChatBot() {
             <div
               className="absolute -bottom-2 right-4 md:right-6 w-0 h-0 
                           border-l-[8px] border-l-transparent 
-                          border-t-[8px] border-t-white/90 dark:border-t-neutral-900/90 
+                          border-t-[8px] border-t-card/90 
                           border-r-[8px] border-r-transparent"
             />
           </motion.div>
@@ -253,28 +253,28 @@ export default function ChatBot() {
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 10 }}
-            className="mb-4 w-[310px] md:w-[380px] h-[480px] bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col"
+            className="mb-4 w-[310px] md:w-[380px] h-[480px] bg-card/95 border border-card-border rounded-3xl shadow-2xl overflow-hidden flex flex-col backdrop-blur-md"
           >
-            <div className="p-4 border-b border-neutral-100 dark:border-white/5 bg-neutral-50/50 dark:bg-white/5 flex justify-between items-center">
+            <div className="p-4 border-b border-card-border bg-bg-primary/70 flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <Terminal size={14} className="text-emerald-500" />
-                <span className="text-[10px] font-mono font-bold uppercase text-neutral-500 tracking-widest">
+                <span className="text-[10px] font-bold uppercase text-text-primary/70 tracking-widest">
                   Aldrich_AI_v1.0
                 </span>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-neutral-400 hover:text-black dark:hover:text-white transition-colors">
+              <button onClick={() => setIsOpen(false)} className="text-text-primary/50 hover:text-text-heading transition-colors">
                 <X size={18} />
               </button>
             </div>
 
-            <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 font-mono text-[12px] scrollbar-hide">
+            <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 text-[12px] scrollbar-hide">
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div
                     className={`max-w-[80%] px-3 py-2 rounded-2xl ${
                       msg.role === 'user'
                         ? 'bg-emerald-500 text-white rounded-tr-none'
-                        : 'bg-neutral-100 dark:bg-white/5 text-neutral-800 dark:text-neutral-200 rounded-tl-none border border-transparent dark:border-white/5 shadow-sm'
+                        : 'bg-bg-primary text-text-heading rounded-tl-none border border-card-border shadow-sm'
                     }`}
                   >
                     {msg.content}
@@ -284,7 +284,7 @@ export default function ChatBot() {
 
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="bg-neutral-100 dark:bg-white/5 px-3 py-2 rounded-2xl rounded-tl-none flex gap-1 items-center border border-transparent dark:border-white/5 shadow-sm">
+                  <div className="bg-bg-primary px-3 py-2 rounded-2xl rounded-tl-none flex gap-1 items-center border border-card-border shadow-sm">
                     <span className="size-1.5 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
                     <span className="size-1.5 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
                     <span className="size-1.5 bg-emerald-500 rounded-full animate-bounce" />
@@ -307,13 +307,13 @@ export default function ChatBot() {
               </div>
             )}
 
-            <form onSubmit={handleSendMessage} className="p-4 bg-neutral-50 dark:bg-white/5 border-t border-neutral-100 dark:border-white/5 flex gap-2">
+            <form onSubmit={handleSendMessage} className="p-4 bg-bg-primary/70 border-t border-card-border flex gap-2">
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 disabled={isTyping}
                 placeholder={isTyping ? 'Aldrich is typing...' : 'Type command...'}
-                className="flex-1 bg-transparent outline-none text-sm text-neutral-800 dark:text-neutral-200 placeholder:text-neutral-400 disabled:opacity-50"
+                className="flex-1 bg-transparent outline-none text-sm text-text-heading placeholder:text-text-primary/45 disabled:opacity-50"
               />
               <button
                 type="submit"
@@ -335,7 +335,7 @@ export default function ChatBot() {
           if (showHint) setShowHint(false);
         }}
         className={`size-12 md:size-14 rounded-full md:rounded-2xl flex items-center justify-center shadow-emerald-500/20 shadow-xl transition-all border ${
-          isOpen ? 'bg-neutral-900 text-white border-transparent' : 'bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-100 border-neutral-200 dark:border-white/10'
+          isOpen ? 'bg-card text-text-heading border-card-border' : 'bg-card/95 text-text-heading border-card-border'
         }`}
       >
         {isOpen ? (

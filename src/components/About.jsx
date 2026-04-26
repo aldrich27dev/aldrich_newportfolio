@@ -90,7 +90,7 @@ export default function About() {
           </div>
           <div className="mt-6 flex gap-2 items-center opacity-50">
               <Monitor size={14} />
-              <span className="text-[10px] font-mono uppercase tracking-widest">System Active</span>
+              <span className="text-[10px] font-semibold uppercase tracking-widest">System Active</span>
           </div>
         </motion.div>
       </div>

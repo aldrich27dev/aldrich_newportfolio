@@ -23,10 +23,31 @@ export default function Navbar() {
   }, [isDark]);
 
   const navLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'ABOUT', href: '#about' },
+    { name: 'PROJECTS', href: '#projects' },
+    { name: 'CONTACT', href: '#contact' },
   ];
+
+  const scrollToSection = (href, closeMenu = false) => {
+    const targetId = href.replace('#', '');
+    const target = document.getElementById(targetId);
+
+    if (closeMenu) {
+      setIsOpen(false);
+    }
+
+    if (!target) {
+      window.location.hash = href;
+      return;
+    }
+
+    window.history.replaceState(null, '', href);
+    window.setTimeout(() => {
+      const headerOffset = 96;
+      const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+      window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+    }, closeMenu ? 180 : 0);
+  };
 
   return (
     <motion.nav 
@@ -49,14 +70,15 @@ export default function Navbar() {
         {/* Desktop Links */}
         <div className="hidden md:flex gap-10 text-[11px] font-black uppercase tracking-[0.3em] text-neutral-500 dark:text-neutral-500">
           {navLinks.map((link) => (
-            <a 
+            <button
               key={link.name} 
-              href={link.href} 
+              type="button"
+              onClick={() => scrollToSection(link.href)}
               className="hover:text-black dark:hover:text-emerald-400 transition-colors relative group"
             >
               {link.name}
               <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-emerald-500 transition-all group-hover:w-full" />
-            </a>
+            </button>
           ))}
         </div>
 
@@ -73,11 +95,12 @@ export default function Navbar() {
             )}
           </button>
 
-          <a href="mailto:aldrichhcirdla27@gmail.com">
-  <button className="hidden sm:block bg-neutral-950 dark:bg-white text-white dark:text-black text-[10px] font-black px-6 py-3 rounded-full hover:scale-105 active:scale-95 transition-all uppercase tracking-widest shadow-sm">
-    Let's Talk
-  </button>
-</a>
+          <a
+            href="mailto:aldrichhcirdla27@gmail.com"
+            className="hidden sm:inline-flex items-center justify-center bg-neutral-950 dark:bg-white text-white dark:text-black text-[10px] font-extrabold px-6 py-3 rounded-full hover:scale-105 active:scale-95 transition-all uppercase tracking-widest shadow-sm"
+          >
+            LET'S TALK
+          </a>
           <button 
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden p-2 text-neutral-550 dark:text-neutral-500"
@@ -98,18 +121,22 @@ export default function Navbar() {
           >
             <div className="flex flex-col gap-8 p-10 items-center">
               {navLinks.map((link) => (
-                <a 
+                <button
                   key={link.name} 
-                  href={link.href} 
-                  onClick={() => setIsOpen(false)}
-                  className="text-3xl font-black uppercase tracking-tighter text-neutral-900 dark:text-white"
+                  type="button"
+                  onClick={() => scrollToSection(link.href, true)}
+                 className="w-full text-white py-5 rounded-2xl font-extrabold uppercase tracking-[0.2em] text-[10px] text-center transition-all hover:scale-[1.02] active:scale-95"
                 >
                   {link.name}
-                </a>
+                </button>
               ))}
-              {/* <button className="w-full bg-neutral-950 dark:bg-white text-white dark:text-black py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px]">
-                CONTACT ME
-              </button> */}
+              <a
+                href="mailto:aldrichhcirdla27@gmail.com"
+                onClick={() => setIsOpen(false)}
+                className="w-full bg-neutral-950 dark:bg-white text-white dark:text-black py-5 rounded-2xl font-extrabold uppercase tracking-[0.2em] text-[10px] text-center transition-all hover:scale-[1.02] active:scale-95"
+              >
+                LET'S TALK
+              </a>
             </div>
           </motion.div>
         )}

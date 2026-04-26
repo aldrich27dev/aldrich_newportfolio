@@ -81,7 +81,7 @@ export default function Hero() {
           >
             <div className="group relative bg-neutral-950 border border-neutral-800 px-6 py-3 flex items-center gap-4 transition-all hover:border-emerald-500/50">
               <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-              <p className="text-[10px] font-mono tracking-[0.2em] uppercase text-emerald-500 font-bold">
+              <p className="text-[10px] tracking-[0.2em] uppercase text-emerald-500 font-bold">
                 ITS BETTER WHEN ITS DARK
               </p>
             </div>
@@ -98,7 +98,7 @@ export default function Hero() {
       >
         <div className="flex items-center gap-2 mb-6">
           <div className="size-2 bg-blue-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
-          <span className="text-neutral-500 font-mono text-[10px] uppercase tracking-[0.3em]">
+          <span className="text-neutral-500 text-[10px] uppercase tracking-[0.3em]">
             System v2.0.26_Stable
           </span>
         </div>
@@ -175,9 +175,9 @@ export default function Hero() {
         </div>
 
         <h2 className="font-bold text-xl text-text-primary">Manila, PH</h2>
-        <p className="text-neutral-500 text-sm mt-1 font-mono">14.5995° N, 120.9842° E</p>
+        <p className="text-neutral-500 text-sm mt-1">14.5995° N, 120.9842° E</p>
 
-        <div className="mt-6 px-3 py-1 border border-emerald-500/20 bg-emerald-500/5 text-emerald-500 text-[10px] font-mono uppercase tracking-tighter rounded-full">
+        <div className="mt-6 px-3 py-1 border border-emerald-500/20 bg-emerald-500/5 text-emerald-500 text-[10px] uppercase tracking-tighter rounded-full">
           Online_Now
         </div>
       </motion.div>

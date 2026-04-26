@@ -1,68 +1,81 @@
-import React from 'react';
-import * as LucideIcons from 'lucide-react';
-// 🚩 NEW: Import react-icons for brand-specific, solid vectors 🚩
+import { Sparkles } from 'lucide-react';
 import { SiFacebook, SiInstagram, SiGmail } from 'react-icons/si';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
-  // Bulletproof Icon Component (Kept for navigation/generic icons)
-  const Icon = ({ name, size = 18, className = "" }) => {
-    const LucideIcon = LucideIcons[name] || LucideIcons[`${name}Icon`] || LucideIcons.HelpCircle;
-    return <LucideIcon size={size} className={className} />;
-  };
-
-  // 🚩 Updated socialLinks array to include Instagram and use brand-specific color hints 🚩
   const socialLinks = [
-    { name: "Facebook", href: "https://www.facebook.com/aldrichnaag27", icon: SiFacebook, colorClass: "text-[#1877F2]" },
-    { name: "Instagram", href: "https://www.instagram.com/aldrichruru", icon: SiInstagram, colorClass: "text-[#E4405F]" },
-    { name: "Gmail", href: "mailto:aldrichhcirdla27@gmail.com", icon: SiGmail, colorClass: "text-[#EA4335]" },
+    { name: 'Facebook', href: 'https://www.facebook.com/aldrichnaag27', icon: SiFacebook },
+    { name: 'Instagram', href: 'https://www.instagram.com/aldrichruru', icon: SiInstagram },
+    { name: 'Gmail', href: 'mailto:aldrichhcirdla27@gmail.com', icon: SiGmail },
+  ];
+
+  const navLinks = [
+    { name: 'About', href: '#about' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Contact', href: '#contact' },
   ];
 
   return (
-    <footer className="w-full py-16 px-6 md:px-12 border-t border-card-border bg-bg-primary text-text-primary transition-colors duration-500">
-      <div className="max-w-screen-2xl mx-auto w-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
-          
-          {/* Brand Identity */}
-          <div className="space-y-6">
+    <footer className="border-t border-card-border bg-bg-primary px-6 py-14 text-text-primary transition-colors duration-500 md:px-12">
+      <div className="mx-auto max-w-6xl">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
+          <div className="md:col-span-6">
             <div className="flex items-center gap-3">
               <div className="size-8 bg-text-primary flex items-center justify-center rounded-md">
                 <span className="text-bg-primary font-black text-xs">AN</span>
               </div>
-              <h2 className="text-2xl font-black tracking-tighter uppercase underline decoration-emerald-500/30">
-                Aldrich Naag
-              </h2>
+              <div>
+                <p className="text-sm font-black uppercase tracking-[0.3em] text-text-heading text-text-primary">
+                  Aldrich Naag
+                </p>
+                <p className="mt-1 text-xs uppercase tracking-[0.25em] text-text-primary/55">
+                  Front-end, backend, and embedded systems
+                </p>
+              </div>
             </div>
-            <p className="opacity-70 text-sm max-w-xs leading-relaxed font-medium">
-              IT student focused on Front-end Development and Embedded Systems, building reliable and efficient digital projects.
+
+            <p className="mt-5 max-w-md text-sm leading-7 text-text-primary">
+              IT student focused on building clean interfaces, reliable systems, and projects that stay visually consistent from top to bottom.
             </p>
-            <div className="flex items-center gap-4 text-[10px] font-mono text-emerald-600 font-bold uppercase tracking-widest">
-              <span>● Manila</span>
-              <span className="opacity-20">|</span>
+
+            <div className="mt-6 flex flex-wrap items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-600">
+              <span>Manila</span>
+              <span className="text-text-primary/20">|</span>
               <span>Philippines</span>
             </div>
           </div>
 
-          {/* Navigation & Connect */}
-          <div className="grid grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <h4 className="text-[10px] font-mono opacity-50 uppercase tracking-[0.3em] font-bold text-left">
-                // Connect
-              </h4>
-              <div className="flex gap-2 justify-start items-center">
-                {/* 🚩 Replaced mapping logic to use react-icons vectors 🚩 */}
-                {socialLinks.map((social) => (
-                  <a 
-                    key={social.name}
-                    href={social.href} 
-                    className="size-10 border border-card-border flex items-center justify-center rounded-lg hover:border-text-primary transition-all duration-300 group"
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:col-span-6">
+            <div>
+              <div className="mt-4 flex flex-col gap-3">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    className="text-sm font-semibold text-text-heading transition-colors hover:text-emerald-600"
                   >
-                    {/* Using social.icon directly from Simple Icons */}
-                    <social.icon 
-                      size={20} 
-                      className={`group-hover:scale-110 ${social.colorClass} opacity-60 group-hover:opacity-100 transition-all`} 
-                    />
+                    {link.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.35em] text-text-primary/50">
+                Connect
+              </h4>
+              <div className="mt-4 flex gap-3">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.href}
+                    target={social.href.startsWith('http') ? '_blank' : undefined}
+                    rel={social.href.startsWith('http') ? 'noreferrer noopener' : undefined}
+                    className="flex h-11 w-11 items-center justify-center rounded-2xl border border-card-border bg-card text-text-primary transition-all hover:-translate-y-0.5 hover:border-emerald-500/35 hover:text-emerald-600"
+                    aria-label={social.name}
+                  >
+                    <social.icon size={18} />
                   </a>
                 ))}
               </div>
@@ -70,11 +83,10 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-card-border flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-[10px] font-mono opacity-50 uppercase tracking-widest">
-            © {currentYear} Aldrich Naag. All Rights Reserved.
-          </p>
+        <div className="mt-10 flex flex-col gap-4 border-t border-card-border pt-6 text-xs text-text-primary/55 md:flex-row md:items-center md:justify-between">
+          <p>&copy; {currentYear} Aldrich Naag. All rights reserved.</p>
+          <div className="flex items-center gap-2">
+          </div>
         </div>
       </div>
     </footer>

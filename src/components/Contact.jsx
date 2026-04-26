@@ -1,187 +1,195 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Phone, MapPin, Terminal, Send, CheckCircle, AlertCircle, X } from 'lucide-react';
+import { CheckCircle, Mail, MapPin, Phone, Send, X } from 'lucide-react';
 
 export default function Contact() {
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const systemDetails = [
-    { icon: <Mail size={16} />, label: 'SYSTEM_ADDRESS', value: 'hello@aldrich.dev' },
-    { icon: <Phone size={16} />, label: 'NETWORK_PHONE', value: '+63 9xx xxx xxxx' },
-    { icon: <MapPin size={16} />, label: 'PHYSICAL_NODE', value: 'Manila, PH // GMT+8' },
+  const contactMethods = [
+    { icon: Mail, label: 'Email', value: 'aldrichnaag72@gmail.com' },
+    { icon: Phone, label: 'Phone', value: '+63 992 373 4701' },
+    { icon: MapPin, label: 'Location', value: 'Manila, PH // GMT+8' },
   ];
 
   const onSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setResult("INITIATING_SEQUENCE...");
-    
+    setResult('Preparing message...');
+
     const formData = new FormData(event.target);
-    formData.append("access_key", "068fa21e-11e8-4815-86c3-306423d7a19b");
+    formData.append('access_key', '068fa21e-11e8-4815-86c3-306423d7a19b');
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
       });
       const data = await response.json();
 
       if (data.success) {
-        setResult(""); // Clear result text
-        setIsModalOpen(true); // Open the success modal
+        setResult('');
+        setIsModalOpen(true);
         event.target.reset();
       } else {
-        setResult(`ERROR: ${data.message}`);
+        setResult(`Error: ${data.message}`);
       }
-    } catch (error) {
-      setResult("CONNECTION_FAILED");
+    } catch {
+      setResult('Connection failed. Please try again.');
     }
+
     setLoading(false);
   };
 
   return (
-    <section id="contact" className="relative py-32 px-6 max-w-6xl mx-auto selection:bg-emerald-500/20 overflow-hidden min-h-[70vh] flex flex-col justify-center">
-      
-      {/* SUCCESS MODAL */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-          >
-            <motion.div 
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-neutral-900 border border-emerald-500/30 p-8 max-w-sm w-full relative"
-            >
-              <button 
-                onClick={() => setIsModalOpen(false)}
-                className="absolute top-4 right-4 text-emerald-500 hover:text-white transition-colors"
-              >
-                <X size={20} />
-              </button>
-              <div className="flex flex-col items-center text-center gap-4">
-                <CheckCircle size={48} className="text-emerald-500" />
-                <h3 className="text-xl font-bold font-mono text-white">TRANSMISSION_SUCCESSFUL</h3>
-                <p className="text-neutral-400 text-sm font-mono leading-relaxed">
-                  The data packet has been successfully received by the network. Standing by for further commands.
-                </p>
-                <button 
-                  onClick={() => setIsModalOpen(false)}
-                  className="mt-4 w-full bg-emerald-500/10 border border-emerald-500/50 text-emerald-500 py-2 font-mono text-xs uppercase hover:bg-emerald-500 hover:text-black transition-all"
-                >
-                  ACKNOWLEDGE
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* 🚩 TACTICAL OVERLAY */}
-      <div className="absolute inset-0 -z-10 opacity-20 pointer-events-none">
-        <div className="absolute top-10 right-10 w-32 h-32 border border-emerald-500/10 rounded-full animate-pulse" />
-        <div className="absolute bottom-20 right-10 text-[8vw] font-black text-emerald-500/[0.03] select-none leading-none font-mono">
-          ...
-        </div>
+    <section
+      id="contact"
+      className="relative overflow-hidden px-6 py-24 md:py-32"
+    >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-emerald-500/10 blur-3xl" />
+        <div className="absolute right-0 top-24 h-56 w-56 rounded-full bg-blue-500/10 blur-3xl" />
       </div>
 
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mb-24 relative z-10"
-      >
-        <div className="flex items-center gap-4 mb-6">
-          <div className="h-[1px] w-12 bg-emerald-500" />
-          <span className="text-emerald-600 font-mono text-[10px] uppercase tracking-[0.5em] font-bold">
-            Communication_Interface
-          </span>
-        </div>
-        <h2 className="text-xl md:text-5xl font-black tracking-tighter uppercase leading-none">
-          <span className="text-text-primary">CONTACT ME.</span>
-        </h2>
-      </motion.div>
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
+          <div className="relative w-full max-w-sm rounded-3xl border border-card-border bg-card p-8 shadow-2xl shadow-black/30">
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(false)}
+                className="absolute right-4 top-4 rounded-full p-2 text-text-primary/60 transition-colors hover:text-text-primary"
+                aria-label="Close success message"
+              >
+                <X size={18} />
+              </button>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start relative z-10">
-        <div className="lg:col-span-7 space-y-12">
-          
-          <div className="space-y-10">
-            {systemDetails.map((detail, idx) => (
-              <div key={idx} className="pl-6 border-l-[1px] border-neutral-800">
-                <div className="flex items-center gap-2 mb-2 text-emerald-500">
-                  {detail.icon}
-                  <span className="text-neutral-500 text-[9px] font-mono uppercase tracking-[0.4em] font-bold">
-                    {detail.label}
-                  </span>
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-500">
+                  <CheckCircle size={28} />
                 </div>
-                <p className="text-lg md:text-xl font-bold font-mono text-neutral-300">
-                  {detail.value}
+                <h3 className="text-xl font-black tracking-tight text-text-heading">
+                  Message sent
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-text-primary">
+                  Thanks for reaching out. I'll review it and get back to you as soon as I can.
                 </p>
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="mt-6 inline-flex items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-5 py-2 text-xs font-bold uppercase tracking-[0.2em] text-emerald-600 transition-colors hover:bg-emerald-500 hover:text-black"
+                >
+                  Close
+                </button>
               </div>
-            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 lg:grid-cols-12">
+        <div className="lg:col-span-5">
+          <div className="mb-6 flex items-center gap-4">
+            <span className="h-px w-12 bg-emerald-500/70" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.45em] text-emerald-600">
+              Communication Interface
+            </span>
           </div>
 
-          <form onSubmit={onSubmit} className="space-y-4 pt-8 border-t border-neutral-800">
-            <input type="hidden" name="subject" value="New Portfolio Inquiry - Aldrich.dev" />
-            <input type="hidden" name="from_name" value="Portfolio System" />
-            <input type="checkbox" name="botcheck" className="hidden" style={{ display: "none" }} />
+          <h2 className="text-2xl font-black tracking-tight text-text-heading md:text-5xl text-text-primary">
+            CONTACT ME.
+          </h2>
+          <p className="mt-5 max-w-xl text-sm leading-7 text-text-primary md:text-base">
+            If you have a project idea, internship lead, or just want to say hi, send a message and I'll reply through the same theme the site already uses.
+          </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input type="text" name="name" placeholder="Full Name" required className="bg-neutral-900/50 border border-neutral-800 text-white p-3 font-mono text-sm outline-none focus:border-emerald-500 transition-all" />
-              <input type="email" name="email" placeholder="Email Address" required className="bg-neutral-900/50 border border-neutral-800 text-white p-3 font-mono text-sm outline-none focus:border-emerald-500 transition-all" />
-            </div>
-            <textarea name="message" placeholder="Write Message" required rows="4" className="w-full bg-neutral-900/50 border border-neutral-800 text-white p-3 font-mono text-sm outline-none focus:border-emerald-500 transition-all" />
-            
-            <button 
-              type="submit" disabled={loading}
-              className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/50 text-emerald-500 px-6 py-3 font-mono text-xs uppercase tracking-widest hover:bg-emerald-500 hover:text-black transition-all disabled:opacity-50"
-            >
-              {loading ? "TRANSMITTING..." : <><Send size={14} />Send</>}
-            </button>
-            
-            {result && (
-              <div className="flex items-center gap-2 text-xs font-mono text-emerald-500 animate-pulse">
-                {result.includes("ERROR") ? <AlertCircle size={14}/> : <CheckCircle size={14}/>}
-                {result}
-              </div>
-            )}
-          </form>
-        </div>
+          <div className="mt-10 space-y-4">
+            {contactMethods.map((item) => {
+              const Icon = item.icon;
 
-        <div className="hidden lg:flex lg:col-span-5 flex-col justify-between self-stretch py-2 pl-12 border-l border-emerald-500/5">
-           <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                <Terminal size={14} className="text-emerald-500" />
-                <span className="text-[10px] font-mono text-emerald-500 tracking-[0.2em] font-bold">LIVE_STATUS</span>
-              </div>
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <div className="flex justify-between text-[8px] font-mono text-neutral-600">
-                    <span>SIGNAL_STRENGTH</span>
-                    <span>98%</span>
+              return (
+                <div
+                  key={item.label}
+                  className="flex items-center gap-4 rounded-2xl border border-card-border bg-card/70 px-5 py-4 shadow-sm shadow-black/5 backdrop-blur-sm"
+                >
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-500/15 bg-emerald-500/10 text-emerald-500">
+                    <Icon size={18} />
                   </div>
-                  <div className="h-[2px] w-full bg-neutral-900 overflow-hidden">
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "98%" }}
-                      transition={{ duration: 1.5 }}
-                      className="h-full bg-emerald-500/40" 
-                    />
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-text-primary/50">
+                      {item.label}
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-text-heading md:text-base">
+                      {item.value}
+                    </p>
                   </div>
                 </div>
-                <p className="text-[9px] font-mono text-neutral-500 leading-relaxed uppercase tracking-tighter italic">
-                  // listening_for_incoming_packets... <br />
-                  // rsa_encryption_active... <br />
-                  // system_node_online_v1.0.4
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="lg:col-span-7">
+          <div className="rounded-[2rem] border border-card-border bg-card/80 p-6 shadow-xl shadow-black/5 backdrop-blur-sm md:p-8">
+            <div className="mb-8 flex items-center justify-between gap-4">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.35em] text-emerald-600">
+                  Send a message
                 </p>
+                <h3 className="mt-2 text-2xl font-black tracking-tight text-text-heading text-text-primary">
+                  Let&apos;s build something clean.
+                </h3>
               </div>
-           </div>
+              <div className="hidden rounded-full border border-card-border px-4 py-2 text-[10px] font-bold uppercase tracking-[0.25em] text-text-primary/60 md:block">
+                Usually replies within a day
+              </div>
+            </div>
+
+            <form onSubmit={onSubmit} className="space-y-4">
+              <input type="hidden" name="subject" value="New Portfolio Inquiry - Aldrich.dev" />
+              <input type="hidden" name="from_name" value="Portfolio System" />
+              <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Full name"
+                  required
+                  className="w-full rounded-2xl border border-card-border bg-bg-primary/70 px-4 py-3 text-sm text-text-heading outline-none transition-colors placeholder:text-text-primary/45 focus:border-emerald-500/60"
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email address"
+                  required
+                  className="w-full rounded-2xl border border-card-border bg-bg-primary/70 px-4 py-3 text-sm text-text-heading outline-none transition-colors placeholder:text-text-primary/45 focus:border-emerald-500/60"
+                />
+              </div>
+
+              <textarea
+                name="message"
+                placeholder="Write your message"
+                required
+                rows="6"
+                className="w-full rounded-[1.5rem] border border-card-border bg-bg-primary/70 px-4 py-3 text-sm text-text-heading outline-none transition-colors placeholder:text-text-primary/45 focus:border-emerald-500/60"
+              />
+
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-6 py-3 text-xs font-black uppercase tracking-[0.25em] text-emerald-700 transition-colors hover:bg-emerald-500 hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {loading ? 'Sending...' : <><Send size={14} /> Send message</>}
+                </button>
+              </div>
+
+              {/* {result && (
+                <div className="text-sm font-medium text-emerald-600">
+                  {result}
+                </div>
+              )} */}
+            </form>
+          </div>
         </div>
       </div>
     </section>

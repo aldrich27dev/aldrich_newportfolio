@@ -26,16 +26,16 @@ export default function Footer() {
                 <span className="text-bg-primary font-black text-xs">AN</span>
               </div>
               <div>
-                <p className="text-sm font-black uppercase tracking-[0.3em] text-text-heading text-text-primary">
+                <p className="text-sm font-black uppercase tracking-[0.3em] dark:text-neutral-200 text-text-heading text-text-primary">
                   Aldrich Naag
                 </p>
-                <p className="mt-1 text-xs uppercase tracking-[0.25em] text-text-primary/55">
+                <p className="mt-1 text-xs uppercase tracking-[0.25em] text-text-primary/55 dark:text-neutral-400">
                   Front-end, backend, and embedded systems
                 </p>
               </div>
             </div>
 
-            <p className="mt-5 max-w-md text-sm leading-7 text-text-primary">
+            <p className="mt-5 max-w-md text-sm leading-7 text-text-primary dark:text-neutral-200">
               IT student focused on building clean interfaces, reliable systems, and projects that stay visually consistent from top to bottom.
             </p>
 

@@ -94,10 +94,10 @@ export default function Contact() {
             </span>
           </div>
 
-          <h2 className="text-2xl font-black tracking-tight text-text-heading md:text-5xl text-text-primary">
+          <h2 className="text-2xl dark:text-neutral-200 font-black tracking-tight text-text-heading md:text-5xl text-text-primary">
             CONTACT ME.
           </h2>
-          <p className="mt-5 max-w-xl text-sm leading-7 text-text-primary md:text-base">
+          <p className="mt-5 max-w-xl text-sm leading-7 text-text-primary md:text-base dark:text-neutral-200">
             If you have a project idea, internship lead, or just want to say hi, send a message and I'll reply through the same theme the site already uses.
           </p>
 
@@ -134,7 +134,7 @@ export default function Contact() {
                 <p className="text-[10px] font-bold uppercase tracking-[0.35em] text-emerald-600">
                   Send a message
                 </p>
-                <h3 className="mt-2 text-2xl font-black tracking-tight text-text-heading text-text-primary">
+                <h3 className="mt-2 text-2xl font-black tracking-tight text-text-heading text-text-primary dark:text-neutral-200">
                   Let&apos;s build something clean.
                 </h3>
               </div>

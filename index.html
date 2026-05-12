@@ -5,6 +5,58 @@
     <link rel="icon" type="image/svg+xml" href="./public/images/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Aldrich Naag | Portfolio</title>
+    <script>
+      (() => {
+        const storageKey = 'theme-preference';
+        const root = document.documentElement;
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+        const getStoredTheme = () => {
+          try {
+            const theme = localStorage.getItem(storageKey);
+            return theme === 'dark' || theme === 'light' ? theme : null;
+          } catch {
+            return null;
+          }
+        };
+
+        const getSystemTheme = () => (mediaQuery.matches ? 'dark' : 'light');
+
+        const applyTheme = (theme) => {
+          const resolvedTheme =
+            theme === 'dark' || theme === 'light' ? theme : getSystemTheme();
+
+          root.classList.toggle('dark', resolvedTheme === 'dark');
+          root.style.colorScheme = resolvedTheme;
+        };
+
+        const syncTheme = () => {
+          applyTheme(getStoredTheme() ?? getSystemTheme());
+        };
+
+        syncTheme();
+
+        const syncWithSystem = (event) => {
+          if (getStoredTheme()) {
+            return;
+          }
+
+          applyTheme(event.matches ? 'dark' : 'light');
+        };
+
+        if (mediaQuery.addEventListener) {
+          mediaQuery.addEventListener('change', syncWithSystem);
+        } else if (mediaQuery.addListener) {
+          mediaQuery.addListener(syncWithSystem);
+        }
+
+        window.addEventListener('storage', (event) => {
+          if (event.key === storageKey) {
+            syncTheme();
+          }
+        });
+      })();
+    </script>
   </head>
   <body oncontextmenu="return false">
     <div id="root"></div>

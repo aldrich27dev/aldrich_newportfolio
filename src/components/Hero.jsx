@@ -103,7 +103,7 @@ export default function Hero() {
           </span>
         </div>
 
-        <h1 className="text-5xl md:text-8xl font-bold tracking-tight leading-[0.9] text-transparent bg-clip-text bg-gradient-to-r from-neutral-400 via-neutral-500 to-neutral-800">
+        <h1 className="text-5xl md:text-8xl font-bold tracking-tight leading-[0.9] dark:text-neutral-300">
           ALDRICH NAAG <br />
           <div className="relative h-[60px] md:h-[80px] overflow-hidden mt-2">
             <AnimatePresence mode="wait">
@@ -113,7 +113,7 @@ export default function Hero() {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -30, opacity: 0 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="absolute left-0 text-4xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-neutral-300 via-neutral-500 to-neutral-700 dark:from-neutral-100 dark:via-neutral-400 dark:to-neutral-600"
+                className="absolute left-0 text-4xl md:text-6xl dark:text-neutral-300"
               >
                 {TITLES[titleIndex]}
               </motion.span>
@@ -121,7 +121,7 @@ export default function Hero() {
           </div>
         </h1>
         <p className="text-lg md:text-xl text-neutral-500 max-w-lg leading-relaxed">
-    <span className="text-neutral-500 font-medium text-transparent bg-clip-text bg-gradient-to-r from-neutral-400 via-neutral-500 to-neutral-700">focused on high-performance systems and embedded hardware.</span> 
+    <span className="text-neutral-500 font-medium dark:text-neutral-400">focused on high-performance systems and embedded hardware.</span> 
   </p>
 
         {/* <p className="text-neutral-500 dark:text-neutral-400 mt-1 text-2lg max-w-md leading-relaxed text-transparent bg-clip-text bg-gradient-to-r from-neutral-300 via-neutral-500 to-neutral-700">
@@ -174,12 +174,16 @@ export default function Hero() {
           </div>
         </div>
 
-        <h2 className="font-bold text-xl text-text-primary">Manila, PH</h2>
-        <p className="text-neutral-500 text-sm mt-1">14.5995° N, 120.9842° E</p>
+        <h2 className="font-bold text-xl text-text-primary dark:text-neutral-300">Manila, PH</h2>
+        <p className="text-neutral-500 text-sm mt-1 dark:text-neutral-300">14.5995° N, 120.9842° E</p>
 
-        <div className="mt-6 px-3 py-1 border border-emerald-500/20 bg-emerald-500/5 text-emerald-500 text-[10px] uppercase tracking-tighter rounded-full">
-          Online_Now
-        </div>
+       <a
+  href="/cv.pdf"
+  download="Aldrich_Naag_CV.pdf"
+  className="inline-flex mt-6 px-3 py-3 border border-emerald-500/20 bg-emerald-500/5 text-emerald-500 text-[10px] uppercase tracking-tighter rounded-full hover:bg-emerald-500/10 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
+>
+  Download CV
+</a>
       </motion.div>
     </section>
   );

@@ -51,7 +51,7 @@ export default function Projects() {
             <span className="text-[10px] font-bold uppercase tracking-[0.45em] text-emerald-600">
               RECENT
             </span>
-        <h2 className="text-2xl md:text-5xl font-black tracking-tighter uppercase mt-4 text-text-primary">
+        <h2 className="dark:text-neutral-200 text-2xl md:text-5xl font-black tracking-tighter uppercase mt-4 text-text-primary">
           Projects
         </h2>
       </div>
@@ -79,13 +79,13 @@ export default function Projects() {
 
             {/* Content */}
             <div className="mt-8 relative z-10 flex-grow">
-              <h3 className="text-2xl font-black text-text-primary group-hover:text-emerald-600 transition-colors">
+              <h3 className="dark:text-neutral-200 text-2xl font-black text-text-primary group-hover:text-emerald-600 transition-colors">
                 {project.name}
               </h3>
               <p className="text-emerald-600 text-[10px] uppercase tracking-widest font-bold mt-1">
                 {project.type}
               </p>
-              <p className="text-neutral-500 mt-4 text-sm leading-relaxed">
+              <p className="text-neutral-500 dark:text-neutral-300 mt-4 text-sm leading-relaxed">
                 {project.desc}
               </p>
               

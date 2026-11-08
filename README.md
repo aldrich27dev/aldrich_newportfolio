@@ -6,13 +6,13 @@
 | **Framework** | React 18 (Vite) |
 | **Styling** | Tailwind CSS + Framer Motion |
 | **Icons** | Lucide React |
-| **Backend/AI** | Groq Cloud API (Llama 3.1) |
+| **Backend/AI** | Google Gemini API (Gemini 3.6 Flash) |
 | **Deployment** | GitHub Pages |
 
 ## 📟 CORE_MODULES
 
 - **Dynamic Contact Interface**: A minimalist, tactical node-based display for establishing communication.
-- **AI_INTERFACE**: A custom chatbot (Aldrich AI) integrated with Groq for real-time, witty terminal interaction.
+- **AI_INTERFACE**: A custom chatbot (Aldrich AI) integrated with Gemini for real-time, witty terminal interaction.
 - **Responsive Terminal UI**: Fully optimized for mobile and desktop "Tactical Displays."
 
 
@@ -35,7 +35,7 @@ Configure Environment Variables:
 Create a .env file in the root directory:
 
 Code snippet
-VITE_GROQ_API_KEY=your_secret_key_here
+VITE_GEMINI_API_KEY=your_secret_key_here
 Launch Interface:
 
 npm run dev

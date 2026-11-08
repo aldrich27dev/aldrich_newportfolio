@@ -1,7 +1,79 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Terminal } from 'lucide-react';
+import { SiFacebook, SiInstagram, SiGmail } from 'react-icons/si';
 import { aldrichSystemPrompt } from './constants.js';
+
+const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions';
+
+const socialLinks = [
+  { name: 'Facebook', href: 'https://www.facebook.com/aldrichnaag27', icon: SiFacebook },
+  { name: 'Instagram', href: 'https://www.instagram.com/aldrichruru', icon: SiInstagram },
+  { name: 'Gmail', href: 'https://mail.google.com/mail/?view=cm&fs=1&to=aldrichnaag72@gmail.com&su=Project%20Inquiry', icon: SiGmail },
+];
+
+async function requestGeminiReply(model, messages, options = {}) {
+  const response = await fetch(GEMINI_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${import.meta.env.VITE_GEMINI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model,
+      messages,
+      temperature: 0.7,
+      top_p: 0.8,
+      max_tokens: 1000,
+      ...options,
+    }),
+    signal: AbortSignal.timeout(20000),
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(data?.error?.message || `Gemini request failed (${response.status})`);
+  }
+
+  const content = data?.choices?.[0]?.message?.content;
+
+  if (!content || !content.trim()) {
+    throw new Error('Gemini returned an empty reply');
+  }
+
+  return content.trim();
+}
+
+function renderMessageContent(content) {
+  const parts = content.split(/(https?:\/\/[^\s]+|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g);
+
+  return parts.map((part, index) => {
+    const urlMatch = part.match(/^(https?:\/\/[^\s]+?)([.,;:!?)]*)$/);
+    const emailMatch = part.match(/^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})([.,;:!?)]*)$/);
+    const match = urlMatch || emailMatch;
+
+    if (!match) return part;
+
+    const value = match[1];
+    const trailing = match[2] || '';
+    const isUrl = value.startsWith('http');
+
+    return (
+      <span key={index}>
+        <a
+          href={isUrl ? value : `mailto:${value}`}
+          target={isUrl ? '_blank' : undefined}
+          rel={isUrl ? 'noreferrer noopener' : undefined}
+          className="font-semibold underline underline-offset-2 break-all hover:text-emerald-500"
+        >
+          {value}
+        </a>
+        {trailing}
+      </span>
+    );
+  });
+}
 
 export default function ChatBot() {
   const greetingText = 'Hello Kuys! Aldrich to HAHAHA';
@@ -20,7 +92,8 @@ export default function ChatBot() {
     'Ano tech stack mo?',
     'Musta?',
     'Ano yung ALDRICH.OS?',
-    'Marunong ka mag-ayos ng phone?'
+    'Marunong ka mag-ayos ng phone?',
+    'Paano kita macocontact?'
   ];
 
   useEffect(() => {
@@ -89,40 +162,25 @@ export default function ChatBot() {
     setIsTyping(true);
 
     try {
-      const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
-
       const pastMessages = newMessages
         .filter(msg => msg.role !== 'system')
         .slice(-4);
 
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
-          messages: [
-            aldrichSystemPrompt,
-            ...pastMessages,
-          ],
-          temperature: 0.7,
-          top_p: 0.8,
-          max_tokens: 150,
-        }),
-      });
+      const conversation = [aldrichSystemPrompt, ...pastMessages];
 
-      const data = await response.json();
+      let botMessage;
 
-      if (!response.ok) {
-        throw new Error(data.error?.message || 'Down si Groq HAHAHA');
+      try {
+        botMessage = await requestGeminiReply('gemini-3.6-flash', conversation, {
+          reasoning_effort: 'minimal',
+        });
+      } catch (primaryError) {
+        console.warn('Gemini 3.6 Flash unavailable, falling back to 3.5 Flash-Lite:', primaryError);
+        botMessage = await requestGeminiReply('gemini-3.5-flash-lite', conversation);
       }
 
-      if (data.choices?.[0]?.message?.content) {
-        showAssistantMessage(data.choices[0].message.content);
-        return;
-      }
+      showAssistantMessage(botMessage);
+      return;
     } catch (error) {
       console.error('Aldrich_AI Failure:', error);
 
@@ -271,13 +329,13 @@ export default function ChatBot() {
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div
-                    className={`max-w-[80%] px-3 py-2 rounded-2xl ${
+                    className={`max-w-[80%] px-3 py-2 rounded-2xl whitespace-pre-wrap break-words ${
                       msg.role === 'user'
                         ? 'bg-emerald-500 text-white rounded-tr-none'
                         : 'bg-bg-primary text-text-heading rounded-tl-none border border-card-border shadow-sm'
                     }`}
                   >
-                    {msg.content}
+                    {renderMessageContent(msg.content)}
                   </div>
                 </div>
               ))}
@@ -323,6 +381,29 @@ export default function ChatBot() {
                 <Send size={16} />
               </button>
             </form>
+
+            <div className="flex items-center justify-center gap-2 border-t border-card-border bg-bg-primary/70 px-4 py-2">
+              <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-text-primary/45">
+                Reach me
+              </span>
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+
+                return (
+                  <a
+                    key={social.name}
+                    href={social.href}
+                    target={social.href.startsWith('http') ? '_blank' : undefined}
+                    rel={social.href.startsWith('http') ? 'noreferrer noopener' : undefined}
+                    aria-label={social.name}
+                    className="inline-flex items-center gap-1 rounded-full border border-card-border bg-card px-2.5 py-1 text-[10px] font-semibold text-text-primary transition-colors hover:border-emerald-500/40 hover:text-emerald-600"
+                  >
+                    <Icon size={12} />
+                    {social.name}
+                  </a>
+                );
+              })}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,5 +1,7 @@
 # ⚡ ALDRICH_PORTFOLIO
 
+**Live:** [aldrichportfolio.vercel.app](https://aldrichportfolio.vercel.app/)
+
 
 | Technology |
 | :--- | :--- |
@@ -7,7 +9,7 @@
 | **Styling** | Tailwind CSS + Framer Motion |
 | **Icons** | Lucide React |
 | **Backend/AI** | Google Gemini API (Gemini 3.6 Flash) |
-| **Deployment** | GitHub Pages |
+| **Deployment** | Vercel |
 
 ## 📟 CORE_MODULES
 

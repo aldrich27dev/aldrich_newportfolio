@@ -1,5 +1,5 @@
 {
-  "homepage": "https://aldrich27dev.github.io/aldrich_newportfolio",
+  "homepage": "https://aldrichportfolio.vercel.app/",
   "name": "aldrich-portfolio",
   "private": true,
   "version": "0.0.0",
@@ -13,6 +13,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/genai": "^2.22.0",
     "@google/generative-ai": "^0.24.1",
     "@tailwindcss/vite": "^4.2.2",
     "@vercel/analytics": "^2.0.1",

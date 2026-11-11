@@ -128,7 +128,7 @@ export default function Navbar() {
             ],
           },
           {
-            duration: 650,
+            duration: 500,
             easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
             pseudoElement: '::view-transition-new(root)',
           }
@@ -216,7 +216,7 @@ export default function Navbar() {
             <span
               key={iconAnimationKey}
               className="theme-icon-pop flex items-center justify-center"
-              style={{ '--icon-rotate': isDark ? '-45deg' : '45deg' }}
+              style={{ '--icon-rotate': isDark ? '-140deg' : '140deg' }}
             >
               {isDark ? (
                 <Sun size={20} className="text-yellow-400 fill-yellow-400" />

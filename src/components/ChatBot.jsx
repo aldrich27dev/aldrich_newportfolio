@@ -74,6 +74,19 @@ function buildConversation(messages) {
   return [aldrichSystemPrompt, ...recentMessages];
 }
 
+const NO_CODE_REPLY = 'Ay kuys, chat buddy lang ako dito HAHAHA. Si Aldrich na mismo ang mag-e-explain nun, message mo na lang siya sa email or fb.';
+
+function sanitizeReply(content) {
+  if (!content) {
+    return content;
+  }
+
+  const hasBackticks = content.includes('`');
+  const hasCodeLines = /(^|\n)\s*(const|let|var|function|class|import|export|def|<\?php|#include|npm |pip |git |sudo )/.test(content);
+
+  return hasBackticks || hasCodeLines ? NO_CODE_REPLY : content;
+}
+
 function renderMessageContent(content) {
   const parts = content.split(/(https?:\/\/[^\s]+|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g);
 
@@ -219,6 +232,8 @@ export default function ChatBot() {
         console.warn('Gemini 3.6 Flash unavailable, falling back to 3.5 Flash-Lite:', primaryError);
         botMessage = await requestGeminiReply('gemini-3.5-flash-lite', conversation);
       }
+
+      botMessage = sanitizeReply(botMessage);
 
       if (conversationId !== conversationIdRef.current) {
         return;
@@ -474,6 +489,8 @@ export default function ChatBot() {
       </AnimatePresence>
 
       <motion.button
+        type="button"
+        aria-label={isOpen ? 'Close chat' : 'Open chat'}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => {

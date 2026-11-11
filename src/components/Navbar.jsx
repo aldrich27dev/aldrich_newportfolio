@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Moon, Sun, Menu, X } from 'lucide-react';
 
@@ -7,6 +8,7 @@ const THEME_STORAGE_KEY = 'theme-preference';
 export default function Navbar() {
   const menuRef = useRef(null);
   const toggleRef = useRef(null);
+  const isThemeTransitioning = useRef(false);
   const [isDark, setIsDark] = useState(() =>
     typeof document !== 'undefined'
       ? document.documentElement.classList.contains('dark')
@@ -52,9 +54,8 @@ export default function Navbar() {
     return () => document.removeEventListener('pointerdown', handlePointerDown);
   }, [isOpen]);
 
-  const applyTheme = (theme) => {
+  const commitTheme = (nextTheme) => {
     const root = document.documentElement;
-    const nextTheme = theme === 'dark' ? 'dark' : 'light';
 
     try {
       localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
@@ -65,6 +66,71 @@ export default function Navbar() {
     root.classList.toggle('dark', nextTheme === 'dark');
     root.style.colorScheme = nextTheme;
     setIsDark(nextTheme === 'dark');
+  };
+
+  const applyTheme = (theme, event) => {
+    const nextTheme = theme === 'dark' ? 'dark' : 'light';
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!document.startViewTransition || prefersReducedMotion) {
+      commitTheme(nextTheme);
+      return;
+    }
+
+    if (isThemeTransitioning.current) {
+      return;
+    }
+
+    const rect = event?.currentTarget?.getBoundingClientRect();
+    const x = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const y = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    isThemeTransitioning.current = true;
+    document.documentElement.classList.add('theme-transitioning');
+
+    let transition;
+
+    try {
+      transition = document.startViewTransition(() => {
+        flushSync(() => {
+          commitTheme(nextTheme);
+        });
+      });
+    } catch {
+      document.documentElement.classList.remove('theme-transitioning');
+      isThemeTransitioning.current = false;
+      commitTheme(nextTheme);
+      return;
+    }
+
+    transition.ready
+      .then(() => {
+        document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${endRadius}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration: 650,
+            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+            pseudoElement: '::view-transition-new(root)',
+          }
+        );
+      })
+      .catch(() => {
+        // The theme is already applied even if the transition is skipped.
+      });
+
+    transition.finished.finally(() => {
+      document.documentElement.classList.remove('theme-transitioning');
+      isThemeTransitioning.current = false;
+    });
   };
 
   const navLinks = [
@@ -130,7 +196,7 @@ export default function Navbar() {
         {/* Action Group */}
         <div className="flex items-center gap-4">
           <button 
-            onClick={() => applyTheme(isDark ? 'light' : 'dark')}
+            onClick={(event) => applyTheme(isDark ? 'light' : 'dark', event)}
             className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-all active:scale-90"
           >
             {isDark ? (

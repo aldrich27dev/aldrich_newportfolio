@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, X, Send, Terminal } from 'lucide-react';
+import { MessageSquare, X, Send, Terminal, RotateCcw } from 'lucide-react';
 import { SiFacebook, SiInstagram, SiGmail } from 'react-icons/si';
 import { aldrichSystemPrompt } from './constants.js';
 
 const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions';
+const MAX_CONTEXT_MESSAGES = 20;
+const MAX_CONTEXT_CHARS = 24000;
 
 const socialLinks = [
   { name: 'Facebook', href: 'https://www.facebook.com/aldrichnaag27', icon: SiFacebook },
@@ -24,7 +26,7 @@ async function requestGeminiReply(model, messages, options = {}) {
       messages,
       temperature: 0.7,
       top_p: 0.8,
-      max_tokens: 1000,
+      max_tokens: 600,
       ...options,
     }),
     signal: AbortSignal.timeout(20000),
@@ -43,6 +45,33 @@ async function requestGeminiReply(model, messages, options = {}) {
   }
 
   return content.trim();
+}
+
+function buildConversation(messages) {
+  const recentMessages = [];
+  let totalChars = 0;
+
+  for (let i = messages.length - 1; i >= 0; i -= 1) {
+    const message = messages[i];
+
+    if (message.role === 'system') {
+      continue;
+    }
+
+    const nextTotal = totalChars + message.content.length;
+    const exceedsLimit =
+      recentMessages.length >= MAX_CONTEXT_MESSAGES ||
+      (recentMessages.length > 0 && nextTotal > MAX_CONTEXT_CHARS);
+
+    if (exceedsLimit) {
+      break;
+    }
+
+    recentMessages.unshift(message);
+    totalChars = nextTotal;
+  }
+
+  return [aldrichSystemPrompt, ...recentMessages];
 }
 
 function renderMessageContent(content) {
@@ -87,6 +116,7 @@ export default function ChatBot() {
   const [showHint, setShowHint] = useState(true);
   const scrollRef = useRef(null);
   const typingTimeoutRef = useRef(null);
+  const conversationIdRef = useRef(0);
 
   const suggestions = [
     'Ano tech stack mo?',
@@ -150,6 +180,20 @@ export default function ChatBot() {
     }, delay);
   };
 
+  const resetConversation = () => {
+    conversationIdRef.current += 1;
+
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+      typingTimeoutRef.current = null;
+    }
+
+    setMessages([]);
+    setHasPlayedGreeting(false);
+    setInput('');
+    setIsTyping(false);
+  };
+
   const handleSendMessage = async (e, manualText = null) => {
     if (e) e.preventDefault();
 
@@ -157,16 +201,13 @@ export default function ChatBot() {
     if (!userMsg || isTyping) return;
 
     const newMessages = [...messages, { role: 'user', content: userMsg }];
+    const conversationId = conversationIdRef.current;
     setMessages(newMessages);
     setInput('');
     setIsTyping(true);
 
     try {
-      const pastMessages = newMessages
-        .filter(msg => msg.role !== 'system')
-        .slice(-4);
-
-      const conversation = [aldrichSystemPrompt, ...pastMessages];
+      const conversation = buildConversation(newMessages);
 
       let botMessage;
 
@@ -179,10 +220,18 @@ export default function ChatBot() {
         botMessage = await requestGeminiReply('gemini-3.5-flash-lite', conversation);
       }
 
+      if (conversationId !== conversationIdRef.current) {
+        return;
+      }
+
       showAssistantMessage(botMessage);
       return;
     } catch (error) {
       console.error('Aldrich_AI Failure:', error);
+
+      if (conversationId !== conversationIdRef.current) {
+        return;
+      }
 
       const errorPool = {
         tech: [
@@ -243,7 +292,7 @@ export default function ChatBot() {
       showAssistantMessage(randomError, 900);
       return;
     } finally {
-      if (!typingTimeoutRef.current) {
+      if (conversationId === conversationIdRef.current && !typingTimeoutRef.current) {
         setIsTyping(false);
       }
     }
@@ -320,9 +369,25 @@ export default function ChatBot() {
                   Aldrich_AI_v1.0
                 </span>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-text-primary/50 hover:text-text-heading transition-colors">
-                <X size={18} />
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={resetConversation}
+                  aria-label="Start a new chat"
+                  title="New chat"
+                  className="text-text-primary/50 hover:text-text-heading transition-colors"
+                >
+                  <RotateCcw size={15} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Close chat"
+                  className="text-text-primary/50 hover:text-text-heading transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
             </div>
 
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 text-[12px] scrollbar-hide">

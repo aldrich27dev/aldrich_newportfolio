@@ -15,6 +15,7 @@ export default function Navbar() {
       : false
   );
   const [isOpen, setIsOpen] = useState(false);
+  const [iconAnimationKey, setIconAnimationKey] = useState(0);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -68,12 +69,21 @@ export default function Navbar() {
     setIsDark(nextTheme === 'dark');
   };
 
+  const triggerIconAnimation = () => {
+    setIconAnimationKey((key) => key + 1);
+  };
+
   const applyTheme = (theme, event) => {
     const nextTheme = theme === 'dark' ? 'dark' : 'light';
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (!document.startViewTransition || prefersReducedMotion) {
       commitTheme(nextTheme);
+
+      if (!prefersReducedMotion) {
+        triggerIconAnimation();
+      }
+
       return;
     }
 
@@ -104,6 +114,7 @@ export default function Navbar() {
       document.documentElement.classList.remove('theme-transitioning');
       isThemeTransitioning.current = false;
       commitTheme(nextTheme);
+      triggerIconAnimation();
       return;
     }
 
@@ -130,6 +141,7 @@ export default function Navbar() {
     transition.finished.finally(() => {
       document.documentElement.classList.remove('theme-transitioning');
       isThemeTransitioning.current = false;
+      triggerIconAnimation();
     });
   };
 
@@ -196,14 +208,22 @@ export default function Navbar() {
         {/* Action Group */}
         <div className="flex items-center gap-4">
           <button 
+            type="button"
+            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
             onClick={(event) => applyTheme(isDark ? 'light' : 'dark', event)}
             className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-all active:scale-90"
           >
-            {isDark ? (
-              <Sun size={20} className="text-yellow-400 fill-yellow-400" />
-            ) : (
-              <Moon size={20} className="text-neutral-500 fill-neutral-500" />
-            )}
+            <span
+              key={iconAnimationKey}
+              className="theme-icon-pop flex items-center justify-center"
+              style={{ '--icon-rotate': isDark ? '-45deg' : '45deg' }}
+            >
+              {isDark ? (
+                <Sun size={20} className="text-yellow-400 fill-yellow-400" />
+              ) : (
+                <Moon size={20} className="text-neutral-500 fill-neutral-500" />
+              )}
+            </span>
           </button>
 <a
   href="https://mail.google.com/mail/?view=cm&fs=1&to=aldrichhcirdla27@gmail.com&su=Project%20Inquiry"

@@ -134,3 +134,32 @@ html.theme-transitioning *::before,
 html.theme-transitioning *::after {
   transition: none !important;
 }
+
+/* Theme toggle: subtle icon pop after the circular reveal */
+.theme-icon-pop {
+  animation: theme-icon-pop 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: center;
+}
+
+@keyframes theme-icon-pop {
+  0% {
+    transform: rotate(var(--icon-rotate, 0deg)) scale(0.55);
+    opacity: 0.3;
+  }
+
+  60% {
+    transform: rotate(0deg) scale(1.08);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-icon-pop {
+    animation: none;
+  }
+}

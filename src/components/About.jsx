@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Cpu, Monitor, Database, Code2, GraduationCap } from 'lucide-react';
 import {
   SiArduino,
+  SiCss,
   SiFlask,
   SiGit,
   SiHtml5,
@@ -19,9 +20,14 @@ import {
   SiTailwindcss,
 } from 'react-icons/si';
 import { FaMicrochip } from 'react-icons/fa';
+import { DiPhotoshop } from 'react-icons/di';
+import { TbBrandCSharp } from 'react-icons/tb';
 
-const SI_ICONS = {
+const TECH_ICONS = {
+  DiPhotoshop,
+  FaMicrochip,
   SiArduino,
+  SiCss,
   SiFlask,
   SiGit,
   SiHtml5,
@@ -36,39 +42,37 @@ const SI_ICONS = {
   SiShadcnui,
   SiSupabase,
   SiTailwindcss,
+  TbBrandCSharp,
 };
 
 export default function About() {
   const targetRef = useRef(null);
 
-  const getSiIcon = (name, colorClass) => {
-    if (name === 'FaMicrochip') {
-      return <FaMicrochip className={`${colorClass} text-[20px] md:text-[24px]`} />;
-    }
-    const Icon = SI_ICONS[name];
+  const getTechIcon = (name, colorClass) => {
+    const Icon = TECH_ICONS[name];
     return Icon ? <Icon className={`${colorClass} text-[20px] md:text-[24px]`} /> : <Code2 size={20} />;
   };
 
   const stack = [
-    { name: 'HTML', icon: getSiIcon('SiHtml5', 'text-[#E34F26]') },
-    { name: 'CSS', icon: getSiIcon('SiCss3', 'text-[#1572B6]') },
-    { name: 'React', icon: getSiIcon('SiReact', 'text-[#61DAFB]') },
-    { name: 'Tailwind', icon: getSiIcon('SiTailwindcss', 'text-[#06B6D4]') },
-    { name: 'JavaScript', icon: getSiIcon('SiJavascript', 'text-[#F7DF1E]') },
-    { name: 'Laravel', icon: getSiIcon('SiLaravel', 'text-[#FF2D20]') },
-    { name: 'Node.js', icon: getSiIcon('SiNodedotjs', 'text-[#339933]') },
-    { name: 'PHP', icon: getSiIcon('SiPhp', 'text-[#777BB4]') },
-    { name: 'Flask', icon: getSiIcon('SiFlask', 'text-white') },
-    { name: 'MySQL', icon: getSiIcon('SiMysql', 'text-[#4479A1]') },
-    { name: 'PostgreSQL', icon: getSiIcon('SiPostgresql', 'text-[#4169E1]') },
-    { name: 'C#', icon: getSiIcon('SiCsharp', 'text-[#239120]') },
-    { name: 'Python', icon: getSiIcon('SiPython', 'text-[#3776AB]') },
-    { name: 'Git', icon: getSiIcon('SiGit', 'text-[#F05032]') },
-    { name: 'Supabase', icon: getSiIcon('SiSupabase', 'text-[#3ECF8E]') },
-    { name: 'Photoshop', icon: getSiIcon('SiPhotoshop', 'text-[#2496ED]') },
-    { name: 'ShadCN', icon: getSiIcon('SiShadcnui', 'text-white') },
-    { name: 'Arduino', icon: getSiIcon('SiArduino', 'text-[#00979D]') },
-    { name: 'ESP32', icon: getSiIcon('FaMicrochip', 'text-emerald-500') },
+    { name: 'HTML', icon: getTechIcon('SiHtml5', 'text-[#E34F26]') },
+    { name: 'CSS', icon: getTechIcon('SiCss', 'text-[#1572B6]') },
+    { name: 'React', icon: getTechIcon('SiReact', 'text-[#61DAFB]') },
+    { name: 'Tailwind', icon: getTechIcon('SiTailwindcss', 'text-[#06B6D4]') },
+    { name: 'JavaScript', icon: getTechIcon('SiJavascript', 'text-[#F7DF1E]') },
+    { name: 'Laravel', icon: getTechIcon('SiLaravel', 'text-[#FF2D20]') },
+    { name: 'Node.js', icon: getTechIcon('SiNodedotjs', 'text-[#339933]') },
+    { name: 'PHP', icon: getTechIcon('SiPhp', 'text-[#777BB4]') },
+    { name: 'Flask', icon: getTechIcon('SiFlask', 'text-white') },
+    { name: 'MySQL', icon: getTechIcon('SiMysql', 'text-[#4479A1]') },
+    { name: 'PostgreSQL', icon: getTechIcon('SiPostgresql', 'text-[#4169E1]') },
+    { name: 'C#', icon: getTechIcon('TbBrandCSharp', 'text-[#512BD4]') },
+    { name: 'Python', icon: getTechIcon('SiPython', 'text-[#3776AB]') },
+    { name: 'Git', icon: getTechIcon('SiGit', 'text-[#F05032]') },
+    { name: 'Supabase', icon: getTechIcon('SiSupabase', 'text-[#3ECF8E]') },
+    { name: 'Photoshop', icon: getTechIcon('DiPhotoshop', 'text-[#31A8FF]') },
+    { name: 'ShadCN', icon: getTechIcon('SiShadcnui', 'text-white') },
+    { name: 'Arduino', icon: getTechIcon('SiArduino', 'text-[#00979D]') },
+    { name: 'ESP32', icon: getTechIcon('FaMicrochip', 'text-emerald-500') },
   ];
 
 

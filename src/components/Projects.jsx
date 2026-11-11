@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import StackIcon from "tech-stack-icons";
+import StackIcon from "./TechStackIcon.jsx";
 
 export default function Projects() {
   const items = [

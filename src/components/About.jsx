@@ -1,17 +1,51 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Cpu, Monitor, Database, Code2, GraduationCap } from 'lucide-react';
-import * as SiIcons from 'react-icons/si';
-import * as FaIcons from 'react-icons/fa';
+import {
+  SiArduino,
+  SiFlask,
+  SiGit,
+  SiHtml5,
+  SiJavascript,
+  SiLaravel,
+  SiMysql,
+  SiNodedotjs,
+  SiPhp,
+  SiPostgresql,
+  SiPython,
+  SiReact,
+  SiShadcnui,
+  SiSupabase,
+  SiTailwindcss,
+} from 'react-icons/si';
+import { FaMicrochip } from 'react-icons/fa';
+
+const SI_ICONS = {
+  SiArduino,
+  SiFlask,
+  SiGit,
+  SiHtml5,
+  SiJavascript,
+  SiLaravel,
+  SiMysql,
+  SiNodedotjs,
+  SiPhp,
+  SiPostgresql,
+  SiPython,
+  SiReact,
+  SiShadcnui,
+  SiSupabase,
+  SiTailwindcss,
+};
 
 export default function About() {
   const targetRef = useRef(null);
 
   const getSiIcon = (name, colorClass) => {
     if (name === 'FaMicrochip') {
-      return <FaIcons.FaMicrochip className={`${colorClass} text-[20px] md:text-[24px]`} />;
+      return <FaMicrochip className={`${colorClass} text-[20px] md:text-[24px]`} />;
     }
-    const Icon = SiIcons[name];
+    const Icon = SI_ICONS[name];
     return Icon ? <Icon className={`${colorClass} text-[20px] md:text-[24px]`} /> : <Code2 size={20} />;
   };
 
